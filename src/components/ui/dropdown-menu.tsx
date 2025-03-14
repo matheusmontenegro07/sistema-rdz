@@ -198,3 +198,6 @@ export {
   DropdownMenuSubTrigger,
   DropdownMenuRadioGroup,
 }
+
+// Adicionando exportação padrão para garantir que o módulo está sendo exportado corretamente
+export default DropdownMenu;
