@@ -1,0 +1,2700 @@
+---
+description: Descrição completa do projeto
+globs: 
+alwaysApply: false
+---
+As páginas deste projeto devem seguir a descrição fielmente abaixo:
+Página 01 - Home
+(Código: #01)
+
+Objetivo:
+A página inicial da plataforma Reduzo funcionará como um dashboard central para o usuário.
+Deve reunir todos os indicadores-chave sobre o desempenho da operação em tempo real.
+O objetivo é que o usuário tenha uma visão estratégica e operacional completa em um único lugar, facilitando decisões rápidas e fundamentadas.
+Tecnologias e Dependências Necessárias:
+Next.js – Para renderização SSR e SSG.
+React Query – Para busca e atualização de dados em tempo real.
+Zustand – Para gerenciamento de estado global (armazenamento local dos indicadores).
+Tailwind CSS – Para estilização rápida e responsiva.
+Shadcn UI – Para construção de componentes como cards, botões e modais.
+Chart.js – Para gráficos dinâmicos.
+Radix UI – Para acessibilidade e comportamentos avançados (tooltips, popovers, etc.).
+Zod – Para validação dos dados retornados pela API.
+Framer Motion – Para animações suaves em transições e efeitos visuais.
+Componentes Visuais e Estrutura:
+A página deve ser construída em 3 colunas para melhor aproveitamento visual:
+
+🔹 Primeira Coluna: Resumo de Resultados (cards com dados numéricos)
+Exibir os principais KPI’s (Key Performance Indicators) em cards interativos:
+Indicador	Descrição	Estilo	Dependência
+Faturamento Diário	Exibe o valor total vendido no dia atual.	Card verde, com ícone de dinheiro	React Query + Zustand
+Faturamento Semanal	Exibe o valor total vendido nos últimos 7 dias.	Card azul, com ícone de calendário semanal	React Query + Zustand
+Faturamento Mensal	Exibe o valor total vendido no mês atual.	Card azul escuro, com ícone de calendário mensal	React Query + Zustand
+CMV Real (%)	Custo de Mercadoria Vendida real em relação ao faturamento.	Card laranja, com ícone de carrinho	React Query + Zustand
+CMV Teórico (%)	CMV baseado no valor calculado com base nas fichas técnicas.	Card roxo, com ícone de lista	React Query + Zustand
+Diferença entre CMV Real e Teórico	Mostra a variação entre o CMV real e o teórico.	Card vermelho, com ícone de alerta	React Query + Zustand
+Itens abaixo do estoque mínimo	Número de insumos com estoque inferior ao mínimo definido.	Card vermelho, com ícone de triângulo de alerta	Zustand
+Produtos mais vendidos	Lista dos 5 produtos mais vendidos (por faturamento).	Lista expansível, com ícone de seta	Zustand
+Produtos com maior variação de preço	Lista dos 5 insumos com maior variação de preço entre as últimas compras.	Lista expansível, com ícone de seta	Zustand + Chart.js
+Economia nas últimas cotações	Exibe quanto o usuário economizou comparando os preços das cotações mais baratas.	Card verde com ícone de dinheiro economizado	Zustand + React Query
+🔹 Segunda Coluna: Gráficos (em tempo real)
+Gráfico de Faturamento (Linha):
+
+Eixo X: Data (diária, semanal ou mensal)
+Eixo Y: Valor de faturamento
+Animação: Linha suave com efeito de fade ao carregar
+Comportamento:
+Hover → Exibe valor detalhado
+Tooltip → Exibe data e valor específico
+Biblioteca: Chart.js
+Estilização: Tailwind + Framer Motion
+Gráfico de CMV Real vs CMV Teórico (Barra):
+
+Eixo X: Período (semanal, mensal)
+Eixo Y: % de CMV
+Barra dupla:
+Barra 1 → CMV Teórico (cor azul)
+Barra 2 → CMV Real (cor laranja)
+Animação: Altura da barra cresce com efeito elástico
+Biblioteca: Chart.js
+Gráfico de Variação de Preço (Linha):
+
+Eixo X: Data
+Eixo Y: Valor em R$
+Linha 1: Menor preço cotado
+Linha 2: Preço médio
+Linha 3: Maior preço cotado
+Animação: Linha se movimenta suavemente com efeito de fade
+Biblioteca: Chart.js
+🔹 Terceira Coluna: Alertas e Insights
+Alertas:
+
+Listados por ordem de prioridade (mais crítico primeiro)
+Cada alerta é um card com cor condicional:
+Vermelho → Crítico (exemplo: item fora de estoque)
+Amarelo → Aviso (exemplo: fornecedor não respondeu à cotação)
+Verde → Concluído (exemplo: fornecedor respondeu à cotação)
+Exemplo de Alerta:
+
+"O produto XYZ está abaixo do estoque mínimo."
+Ao clicar → Direciona para a página de Gestão de Estoque (Página #04)
+Insights:
+
+Lista de sugestões de melhoria:
+"Substitua o fornecedor do produto XYZ para economizar R$ 150 por mês."
+"O CMV teórico está abaixo do CMV real em 12%. Verifique possíveis desperdícios."
+Insights são apresentados como cards clicáveis → Ao clicar, abre um modal detalhado com justificativa.
+🔹 Modal de Configuração de Período (opcional)
+O usuário pode alterar o período exibido nos gráficos e indicadores.
+Opções:
+Diário
+Semanal
+Mensal
+Trimestral
+Anual
+⚙️ Funcionalidade Adicional:
+✅ Autorefresh:
+
+Atualização automática dos indicadores e gráficos a cada 60 segundos.
+Pode ser desativado pelo usuário (toggle switch no cabeçalho).
+✅ Cache Inteligente:
+
+Zustand armazena os dados localmente para evitar múltiplas requisições.
+Dados em cache são descartados após 5 minutos sem atualização.
+✅ Responsividade Completa:
+
+Design mobile-first → Os gráficos e cards devem se adaptar a qualquer resolução.
+Largura mínima → 320px
+Largura máxima → 1440px
+📏 Navegação e Comportamento:
+Clique em um KPI → Redireciona para a página específica do indicador.
+
+Exemplo: Faturamento → Redireciona para Registro de Vendas (Página #11)
+CMV → Redireciona para Relatório de CMV (Página #12)
+Estoque → Redireciona para Gestão de Estoque (Página #04)
+Clique em um Insight → Abre um modal detalhado com mais contexto.
+
+Página 02 - Fornecedores
+(Código: #02)
+
+Objetivo:
+A página de Fornecedores permitirá o cadastro, edição, exclusão e gerenciamento dos fornecedores cadastrados pelo usuário.
+Ela também oferecerá estatísticas detalhadas sobre o desempenho e histórico dos fornecedores, ajudando o usuário a identificar os melhores parceiros para otimização de custos.
+A lógica condicional baseada no tipo de fornecedor deve ser clara e dinâmica, permitindo que campos específicos apareçam ou desapareçam automaticamente dependendo do tipo selecionado.
+A interface será otimizada para rapidez e facilidade na busca, com filtros avançados para classificação de fornecedores por diferentes critérios.
+Tecnologias e Dependências Necessárias:
+Next.js – Para renderização SSR e otimização de desempenho.
+React Query – Para busca e atualização de dados em tempo real.
+Zustand – Para gerenciamento de estado e cache dos fornecedores.
+Tailwind CSS – Para estilização rápida e responsiva.
+Shadcn UI – Para construção de modais, inputs, botões e interações.
+Radix UI – Para menus suspensos, popovers e seleção condicional de campos.
+Framer Motion – Para efeitos de transição e animação suave nos modais.
+Zod – Para validação de formulários e dados retornados da API.
+Lucide-react – Para ícones e indicadores visuais.
+Componentes Visuais e Estrutura:
+A página será organizada em 3 seções principais:
+
+🔹 Primeira Seção: Cabeçalho da Página
+Título → "Fornecedores"
+Botão + (Adicionar Fornecedor) → Ao clicar, abre o Modal de Cadastro de Fornecedor.
+Campo de Busca → Filtro em tempo real com debounce (500ms).
+Botão de Filtro Avançado → Permite filtrar por categoria, tipo de fornecedor e status de resposta.
+🔹 Segunda Seção: Lista de Fornecedores
+Exibida em formato de tabela dinâmica com colunas:
+Campo	Descrição	Comportamento
+Nome da Empresa	Nome do fornecedor	Clicável → Abre detalhes do fornecedor em um modal
+Categoria	Categoria do fornecedor (ex: Laticínios, Carnes)	Classificável por ordem alfabética
+Tipo	Fabricante, Distribuidor, Atacadista ou E-commerce	Exibe um badge colorido com o tipo
+Pedido Mínimo	Valor mínimo para compra (R$)	Mostrado em formato numérico e ordenável
+Vendedor/Localidade/Site	Exibe o campo correspondente ao tipo de fornecedor selecionado	Varia conforme o tipo
+Status	Mostra o desempenho do fornecedor com base na resposta às cotações	Verde (Excelente), Amarelo (Razoável), Vermelho (Ruim)
+Ações	Ícones para editar e excluir o fornecedor	Abre um modal para edição ou confirmação de exclusão
+🔹 Terceira Seção: Estatísticas dos Fornecedores
+✅ Estatísticas serão exibidas em cards interativos que refletem o comportamento histórico dos fornecedores:
+
+Total de Fornecedores: Exibe o número total de fornecedores cadastrados.
+
+Fornecedores Ativos: Exibe o número de fornecedores que enviaram respostas nos últimos 30 dias.
+
+Custo Médio por Fornecedor: Mostra o valor médio gasto por fornecedor nos últimos 30 dias.
+
+Taxa de Resposta:
+
+Verde → >90%
+Amarelo → Entre 50% e 90%
+Vermelho → <50%
+Ranking de Resposta:
+
+Melhores fornecedores: Lista com os 5 fornecedores com maior taxa de resposta.
+Piores fornecedores: Lista com os 5 fornecedores com menor taxa de resposta.
+Gráfico de Distribuição de Compras por Fornecedor:
+
+Exibe em formato de pizza a proporção de compras feitas com cada fornecedor.
+Os fornecedores são identificados por cor e nome.
+Biblioteca: Chart.js
+🔍 Filtros Avançados:
+✅ Filtros que podem ser combinados para refinar a busca:
+
+Nome da empresa (texto)
+Categoria (dropdown)
+Tipo (dropdown)
+Pedido mínimo (ranger slider)
+Status de resposta (dropdown com múltiplas opções)
+Modal de Cadastro de Fornecedor
+👉 Aberto ao clicar no botão + (Adicionar Fornecedor)
+
+🔸 Campos Gerais:
+Campo	Tipo	Validação	Comportamento
+Nome da Empresa	Texto	Obrigatório	Nome deve ser único
+Categoria	Dropdown (Ex: Carnes, Laticínios)	Obrigatório	Seleção dinâmica
+Tipo	Dropdown (Fabricante, Distribuidor, Atacadista, E-commerce)	Obrigatório	Altera dinamicamente os campos subsequentes
+Pedido Mínimo	Numérico	Obrigatório	Valor deve ser ≥ 0
+🔸 Lógica Condicional por Tipo:
+✅ Se Fabricante ou Distribuidor → Exibe:
+
+Nome do vendedor (texto) → Obrigatório
+WhatsApp (número com máscara) → Validação com Regex
+✅ Se Atacadista → Exibe:
+
+Bairro → Obrigatório
+Cidade → Obrigatório
+Estado → Obrigatório
+✅ Se E-commerce → Exibe:
+
+URL do site → Validação com Regex (https://)
+🔸 Regras e Restrições:
+Nome do fornecedor → Não pode ter mais de 50 caracteres
+WhatsApp → Formato: (xx) xxxxx-xxxx
+Site → Deve começar com https://
+Pedido mínimo → Deve ser maior que zero
+🔸 Ações do Modal:
+Salvar e Fechar:
+
+Salva os dados validados usando React Query e Zod.
+Atualiza o cache automaticamente com Zustand.
+Cancelar:
+
+Fecha o modal sem salvar alterações.
+Excluir:
+
+Exibe um alerta de confirmação antes de excluir.
+Remove o fornecedor da lista e do banco de dados.
+🔹 Modal de Edição de Fornecedor
+Os campos serão preenchidos automaticamente com os valores atuais.
+Apenas campos que fazem sentido para o tipo de fornecedor serão exibidos.
+Caso o tipo de fornecedor seja alterado, os campos anteriormente preenchidos relacionados ao tipo anterior serão descartados.
+🔨 Funcionalidade Adicional:
+✅ Debounce na Busca:
+
+A busca será feita com um delay de 500ms para evitar sobrecarga na API.
+✅ Cache Local:
+
+Zustand armazenará os dados localmente por 5 minutos para evitar múltiplas requisições.
+✅ Ordenação Persistente:
+
+A ordenação escolhida pelo usuário será persistida no cache local.
+✅ Responsividade Completa:
+
+Design mobile-first com comportamento adaptável para telas menores.
+✅ Acessibilidade Completa:
+
+Labels e descrições compatíveis com leitor de tela.
+Focus automático ao abrir o modal.
+Navegação com teclado habilitada.
+📏 Navegação e Comportamento:
+Clicando em um fornecedor → Abre o modal de edição.
+Excluindo um fornecedor → Remove da lista imediatamente.
+Botão para adicionar fornecedor → Abre o modal de cadastro.
+Taxa de resposta → Redireciona para o relatório detalhado do fornecedor.
+✅ Conclusão:
+✅ A página deve ser rápida, dinâmica e interativa.
+✅ Todos os componentes devem ser modularizados e reutilizáveis.
+✅ Integração perfeita com a página Insumos (#03).
+
+Página 03 - Insumos
+(Código: #03)
+
+Objetivo:
+A página de Insumos permitirá que o usuário cadastre, edite, exclua e gerencie insumos (ingredientes e produtos utilizados na produção).
+Cada insumo estará diretamente relacionado aos fornecedores cadastrados na página Fornecedores (#02).
+A lógica de homologação, código de barras, estoque mínimo e estoque atual deve ser clara e dinâmica.
+A interface permitirá uma visão geral e detalhada de cada insumo, com estatísticas de estoque, movimentação e relação com fichas técnicas.
+Tecnologias e Dependências Necessárias:
+✅ Next.js – Para renderização SSR e otimização de desempenho.
+✅ React Query – Para busca e atualização de dados em tempo real.
+✅ Zustand – Para gerenciamento de estado e cache dos insumos.
+✅ Tailwind CSS – Para estilização rápida e responsiva.
+✅ Shadcn UI – Para construção de componentes como modais, inputs, botões e listas.
+✅ Framer Motion – Para animação suave em transições e estados.
+✅ Radix UI – Para menus suspensos, seleções e popovers.
+✅ Zod – Para validação dos dados de entrada e resposta da API.
+✅ Lucide-react – Para ícones e elementos visuais.
+✅ React Barcode Scanner – Para leitura de código de barras via câmera (ou input manual).
+
+Componentes Visuais e Estrutura:
+A página será organizada em 4 seções principais:
+
+🔹 Primeira Seção: Cabeçalho da Página
+Título: "Insumos"
+Botão "+ Novo Insumo":
+Ao clicar, abre o Modal de Cadastro de Insumo.
+Campo de Busca:
+Permite buscar o nome ou código de barras do insumo.
+Busca em tempo real com debounce de 500ms.
+Botão de Filtros:
+Filtro por:
+Nome
+Categoria
+Fornecedor
+Status de homologação
+Estoque (mínimo, disponível)
+🔹 Segunda Seção: Lista de Insumos
+A lista de insumos será exibida em formato de tabela dinâmica.
+
+Campo	Descrição	Comportamento
+Código de Barras	Exibe o código de barras em formato de texto	Pode ser clicado → Copiar código
+Nome do Produto	Nome do insumo cadastrado	Clicável → Abre modal de edição
+Categoria	Categoria atribuída ao insumo	Dropdown com opção de ordenação
+Unidade de Medida	Un, Kg, L	Fixo → Não pode ser editado diretamente
+Estoque Atual	Quantidade disponível no estoque	Exibe quantidade + indicador de nível
+Estoque Mínimo	Quantidade mínima definida	Exibe quantidade + alerta se abaixo do mínimo
+Fornecedor	Nome do fornecedor associado ao insumo	Exibe em formato de badge
+Homologado	Sim ou Não	Exibe com um ícone de cadeado
+Ações	Ícones para editar ou excluir	Abre modal de edição ou confirmação de exclusão
+✅ Indicador Visual de Estoque:
+
+Verde → Estoque acima do mínimo
+Amarelo → Estoque próximo ao limite mínimo
+Vermelho → Estoque abaixo do limite mínimo
+✅ Badges de Homologação:
+
+Verde → Homologado
+Cinza → Não homologado
+✅ Tabela com Rolagem Lateral:
+
+Para dispositivos móveis → A tabela deve permitir rolagem horizontal.
+Coluna de "Ações" fica sempre visível ao rolar.
+🔹 Terceira Seção: Estatísticas de Insumos
+✅ Estatísticas detalhadas para análise rápida:
+
+Total de Insumos Cadastrados → Número total de insumos cadastrados.
+Insumos Homologados → Número de insumos homologados.
+Insumos em Estoque → Número de insumos com quantidade superior ao mínimo.
+Insumos com Estoque Baixo → Número de insumos abaixo do estoque mínimo.
+Itens Sem Movimento → Número de itens sem movimentação há mais de 30 dias.
+Insumos por Categoria → Gráfico de pizza mostrando a distribuição por categoria.
+Itens Mais Utilizados em Fichas Técnicas → Lista com os 5 itens mais utilizados em fichas técnicas.
+🔹 Quarta Seção: Alertas de Insumos
+Alerta de Estoque Insuficiente:
+
+Exibe lista de insumos abaixo do estoque mínimo.
+Botão direto para "Adicionar Estoque".
+Alerta de Falta de Fornecedor:
+
+Exibe lista de insumos sem fornecedor associado.
+Botão para abrir o modal de edição e associar fornecedor.
+📋 Modal de Cadastro de Insumo
+👉 Aberto ao clicar no botão "+ Novo Insumo"
+
+🔸 Campos Gerais:
+Campo	Tipo	Validação	Comportamento
+Código de Barras	Input numérico ou via câmera (leitura automática)	Obrigatório	Aceita código manual ou por leitor de código de barras
+Nome do Produto	Texto	Obrigatório	Nome deve ser único
+Categoria	Dropdown (Carnes, Laticínios, Hortifruti, etc.)	Obrigatório	Atualiza dinamicamente a lista de fornecedores disponíveis
+Unidade de Medida	Dropdown (Un, Kg, L)	Obrigatório	Fixado após cadastro
+Estoque Atual	Numérico	Opcional	0 ou maior
+Estoque Mínimo	Numérico	Obrigatório	Valor ≥ 0
+Produto Homologado	Toggle (Sim/Não)	Obrigatório	Se SIM, fornecedor será limitado a um único
+Fornecedor	Dropdown dinâmico (busca dos fornecedores cadastrados)	Obrigatório se homologado	Exibe lista de fornecedores cadastrados
+🔸 Lógica de Homologação:
+✅ Se homologado → Apenas um fornecedor pode ser selecionado.
+✅ Se NÃO homologado → Permite múltiplos fornecedores.
+✅ Se o fornecedor selecionado for excluído → Aparece um alerta para o usuário associar um novo fornecedor.
+
+🔸 Código de Barras:
+✅ Opção 1 → Digitação manual
+✅ Opção 2 → Leitor de código de barras (via câmera):
+
+Abertura automática do modal de câmera.
+Leitura automática e preenchimento do campo.
+Reconhecimento pelo React Barcode Scanner.
+🔸 Validação de Campos:
+Nome do produto → Máximo 100 caracteres
+Código de barras → Formato numérico (sem espaços ou letras)
+Estoque mínimo → Não pode ser negativo
+Código de barras → Não pode ser duplicado
+🔸 Ações do Modal:
+✅ Salvar e Fechar → Salva os dados e fecha o modal.
+✅ Cancelar → Fecha o modal sem salvar alterações.
+✅ Excluir → Abre um modal de confirmação.
+
+🔨 Funcionalidade Adicional:
+✅ Busca com Debounce:
+
+Delay de 500ms para evitar sobrecarga.
+✅ Cache Local:
+
+Os insumos serão armazenados em cache local usando Zustand.
+Cache será atualizado automaticamente a cada 5 minutos.
+✅ Ordenação Persistente:
+
+Ordenação escolhida será armazenada localmente.
+✅ Responsividade Completa:
+
+Design mobile-first → Layout adaptável para qualquer tela.
+✅ Acessibilidade Completa:
+
+Labels e textos alternativos configurados.
+Foco automático nos campos.
+📏 Navegação e Comportamento:
+Clique em um insumo → Abre o modal de edição.
+Excluir um insumo → Remove da lista imediatamente.
+Alteração de fornecedor → Atualiza dinamicamente o valor do estoque.
+✅ Conclusão:
+✅ A página de insumos será rápida, clara e funcional.
+✅ Interface adaptável e lógica condicional robusta.
+✅ Perfeitamente integrada com a página Fornecedores (#02).
+
+Página 04 - Gestão de Estoque
+(Código: #04)
+
+Objetivo:
+A página de Gestão de Estoque permitirá ao usuário monitorar, organizar e registrar todas as movimentações de insumos cadastrados na página Insumos (#03).
+Deve permitir o controle total sobre o estoque, incluindo:
+Registro de entradas e saídas de insumos (manual e automática).
+Organização do estoque em diferentes categorias (fixo, flutuante e intermediário).
+Comparação entre estoque real e contagem manual para detectar inconsistências.
+Geração automática de ordens de cotação e listas de compras com base nos níveis de estoque e no tipo de fornecedor.
+Identificação de desperdícios, ajustes manuais e desvios no CMV.
+Tecnologias e Dependências Necessárias:
+✅ Next.js – Para renderização SSR e otimização de desempenho.
+✅ React Query – Para busca e atualização de dados em tempo real.
+✅ Zustand – Para gerenciamento de estado e cache dos insumos.
+✅ Tailwind CSS – Para estilização rápida e responsiva.
+✅ Shadcn UI – Para construção de componentes como modais, inputs, botões e tabelas.
+✅ Framer Motion – Para efeitos de transição e animação.
+✅ Radix UI – Para popovers, dropdowns e seleção de opções.
+✅ Zod – Para validação dos dados de entrada e resposta da API.
+✅ Lucide-react – Para ícones e indicadores visuais.
+✅ Chart.js – Para exibição de gráficos de movimentação e consumo.
+✅ Day.js – Para manipulação de datas e horários.
+
+Componentes Visuais e Estrutura:
+A página será organizada em 4 seções principais:
+
+🔹 Primeira Seção: Cabeçalho da Página
+Título: "Gestão de Estoque"
+Campo de Busca:
+Permite buscar pelo nome ou código de barras do insumo.
+Busca em tempo real com debounce de 500ms.
+Botão "Registrar Entrada/Saída":
+Abre o Modal de Registro de Movimentação.
+Botão "Registrar Desperdício":
+Abre o Modal de Registro de Desperdício.
+Botão "Contagem de Estoque":
+Abre o Modal de Contagem Manual.
+🔹 Segunda Seção: Lista de Insumos em Estoque
+✅ Exibida em formato de tabela dinâmica:
+
+Campo	Descrição	Comportamento
+Código	Código único do insumo	Clicável → Abre detalhes completos
+Item	Nome do insumo	Clicável → Abre modal de edição
+Categoria	Categoria atribuída ao insumo	Ordenável (A-Z ou Z-A)
+Quantidade	Estoque atual	Verde → Acima do mínimo
+Amarelo → Próximo ao mínimo
+Vermelho → Abaixo do mínimo
+Mínimo	Estoque mínimo definido	Ordenável (crescente/decrescente)
+Preço por Unidade	Preço médio por unidade com base nas últimas compras	Formatado em R$
+Status	Estado do insumo com base na quantidade	Disponível, Insuficiente, Crítico
+Movimentações	Histórico de movimentações	Abre um popover com detalhes completos
+✅ Organização por Tipo de Estoque:
+A tabela será organizada em 3 abas:
+
+Estoque Fixo → Produtos com movimentação regular e com estoque mínimo definido.
+Estoque Flutuante → Produtos com movimentação irregular ou entrada manual.
+Estoque de Produtos Intermediários → Produtos criados a partir de fichas técnicas.
+✅ Ícone de Status:
+
+Verde → Disponível
+Amarelo → Próximo ao limite mínimo
+Vermelho → Abaixo do limite mínimo
+✅ Popovers de Movimentação:
+
+Ao clicar na coluna "Movimentações" → Exibe um popover com:
+Data
+Tipo (entrada, saída ou desperdício)
+Quantidade
+Valor unitário
+Origem (pedido, venda, ajuste manual)
+🔹 Terceira Seção: Estatísticas de Estoque
+✅ Estatísticas em tempo real, exibidas em cards e gráficos:
+
+Valor Total em Estoque: Soma do valor de todos os insumos em estoque.
+Quantidade Total de Insumos: Número total de insumos em estoque.
+Insumos abaixo do estoque mínimo: Número de insumos com nível crítico de estoque.
+Produtos com maior giro: Lista com os 5 produtos mais utilizados em preparações ou vendas.
+Desperdício Acumulado: Soma das perdas registradas.
+Gráfico de Movimentação:
+Tipo de gráfico → Barras empilhadas
+Eixo X → Período (semanal, mensal, anual)
+Eixo Y → Quantidade movimentada
+Barra 1 → Entradas
+Barra 2 → Saídas
+Barra 3 → Desperdício
+🔹 Quarta Seção: Botão "Enviar para Cotação"
+👉 Base de todo o sistema de cotação
+
+✅ Quando o usuário clica em "Enviar para Cotação":
+
+O sistema verifica:
+Se o fornecedor é Distribuidor ou Fabricante → Vai para Ordem de Cotação (#05)
+Se o fornecedor é Atacadista → Vai para Lista de Compras (#06)
+Se o fornecedor é E-commerce → Vai para Cotação Manual em Ordem de Cotação (#05)
+Se o item for homologado:
+O sistema permite apenas o fornecedor homologado.
+Vai para Ordem de Compra (#08) diretamente.
+Se o item NÃO for homologado:
+O sistema permite múltiplos fornecedores para cotação.
+📋 Modal de Registro de Entrada/Saída
+✅ Passo 1: Selecionar data e insumo
+✅ Passo 2: Tipo de movimentação (entrada ou saída)
+✅ Passo 3: Quantidade e valor unitário
+
+📋 Modal de Contagem de Estoque
+✅ Inserir quantidade real de cada item
+✅ Definir frequência de contagem
+✅ Sistema compara valor registrado com valor contado
+
+📋 Modal de Registro de Desperdício
+✅ Selecionar produto
+✅ Inserir quantidade desperdiçada
+✅ Justificativa
+
+📏 Navegação e Comportamento:
+✅ Clicar em um item → Abre modal de edição
+✅ Excluir movimentação → Remove da lista
+✅ Adicionar entrada manual → Atualiza lista automaticamente
+✅ Enviar para cotação → Redireciona para Ordem de Cotação (#05) ou Lista de Compras (#06)
+
+✅ Conclusão:
+✅ A página de Gestão de Estoque se conecta diretamente com as páginas de Ordem de Cotação (#05) e Lista de Compras (#06).
+✅ Os itens vão para cotação ou compra com base no tipo de fornecedor e na homologação.
+
+Página 05 - Ordem de Cotação
+(Código: #05)
+
+Objetivo:
+A página de Ordem de Cotação permitirá ao usuário gerar, editar, monitorar e enviar cotações para os fornecedores cadastrados na página Fornecedores (#02).
+
+O sistema deve receber automaticamente os itens abaixo do estoque mínimo da página Gestão de Estoque (#04) e organizar as cotações com base no tipo de fornecedor e no status de homologação dos itens:
+
+Distribuidor ou Fabricante → Cotação Automática
+E-commerce → Cotação Manual
+Atacadista → Os itens vão para a Lista de Compras (#06)
+Homologado → Vai direto para a Ordem de Compra (#08)
+A página também permitirá que o usuário configure prazos para resposta, envie cotações automaticamente via WhatsApp Web e registre respostas manuais para fornecedores de e-commerce.
+
+Tecnologias e Dependências Necessárias:
+✅ Next.js – Para renderização SSR e otimização de desempenho.
+✅ React Query – Para busca e atualização de dados em tempo real.
+✅ Zustand – Para gerenciamento de estado e cache das cotações.
+✅ Tailwind CSS – Para estilização rápida e responsiva.
+✅ Shadcn UI – Para construção de componentes como cards, modais, inputs e botões.
+✅ Framer Motion – Para efeitos de transição e animação.
+✅ Radix UI – Para popovers, dropdowns e seleção de status.
+✅ Zod – Para validação dos dados de entrada e resposta da API.
+✅ Lucide-react – Para ícones e indicadores visuais.
+✅ Day.js – Para manipulação de datas e horários.
+✅ WhatsApp API (Web) – Para disparo automático de mensagens para fornecedores.
+
+Fluxo Lógico dos Itens Recebidos do Estoque:
+✅ Quando o usuário clica em "Enviar para Cotação" na página de Estoque:
+
+O sistema verifica o tipo de fornecedor:
+Distribuidor ou Fabricante → Cotação Automática
+Atacadista → Vai para Lista de Compras (#06)
+E-commerce → Cotação Manual
+Se o item for homologado:
+Vai diretamente para Ordem de Compra (#08).
+Apenas o fornecedor homologado será permitido na cotação.
+Se o item NÃO for homologado:
+O sistema permite múltiplos fornecedores na cotação.
+Os preços recebidos serão exibidos na Planilha de Cotação (#07).
+Componentes Visuais e Estrutura:
+A página será organizada em 3 seções principais:
+
+🔹 Primeira Seção: Cabeçalho da Página
+Título: "Ordem de Cotação"
+Campo de Busca:
+Permite buscar pelo nome do fornecedor ou código da cotação.
+Busca em tempo real com debounce de 500ms.
+Botão "Nova Cotação":
+Abre o Modal de Criação de Cotação para gerar cotações manualmente.
+Dropdown de Filtros:
+Filtro por:
+Nome do fornecedor
+Categoria
+Tipo de fornecedor
+Status da cotação (Em aberto, Respondida, Não Respondida)
+🔹 Segunda Seção: Lista de Cotações
+✅ Exibida em formato de cards → Cards são organizados por status:
+
+Em Aberto → Fundo amarelo
+Respondida → Fundo verde
+Não Respondida → Fundo vermelho
+✅ Cada card deve conter:
+
+Campo	Descrição	Comportamento
+Código da Cotação	Código único para rastreio	Clicável → Abre detalhes completos
+Data de Emissão	Data e hora de geração da cotação	Formatada por Day.js
+Fornecedor	Nome do fornecedor associado	Clicável → Abre detalhes do fornecedor
+Prazo de Resposta	Tempo restante para o fornecedor responder	Exibe em formato de contagem regressiva
+Quantidade de Itens	Número de itens solicitados na cotação	Exibe número total
+Total Estimado	Valor total estimado (baseado no preço médio dos itens)	Formatado em R$
+Ações	Ícones de edição, exclusão ou envio da cotação	Abre menu de ações rápidas
+✅ Organização por Abas:
+
+Cotação Automática → Para fornecedores Distribuidor ou Fabricante
+Cotação Manual → Para fornecedores E-commerce
+✅ Comportamento de Status:
+
+Cotação em Aberto → Exibe em amarelo → Permite edição e envio.
+Cotação Respondida → Exibe em verde → Permite visualizar resposta.
+Cotação Não Respondida → Exibe em vermelho → Permite reenvio.
+✅ Botão Flutuante de Ação:
+
+Editar → Abre modal para editar a cotação.
+Excluir → Abre confirmação para exclusão.
+Enviar (WhatsApp ou Manual) → Direciona para envio da cotação.
+🔹 Terceira Seção: Estatísticas de Cotações
+✅ Estatísticas detalhadas para análise rápida:
+
+Total de Cotações Emitidas → Soma de todas as cotações enviadas.
+Taxa de Resposta de Fornecedores:
+Verde → >90%
+Amarelo → Entre 50% e 90%
+Vermelho → <50%
+Melhor Preço Encontrado:
+Exibe o menor preço entre todas as respostas.
+Fornecedores Mais Rápidos:
+Lista com os 5 fornecedores que responderam mais rápido.
+Fornecedores com Melhor Desempenho:
+Baseado na frequência de respostas e preços oferecidos.
+📋 Modal de Criação de Cotação
+👉 Aberto ao clicar em "Nova Cotação"
+
+🔸 Campos Gerais:
+Campo	Tipo	Validação	Comportamento
+Nome da Cotação	Texto	Obrigatório	Nome único
+Fornecedor	Dropdown dinâmico	Obrigatório	Baseado nos fornecedores cadastrados
+Prazo de Resposta	Dropdown (2h, 6h, 12h, 24h, 48h, 72h)	Obrigatório	Define prazo para resposta
+Itens da Cotação	Seleção múltipla	Obrigatório	Busca em tempo real pelo nome do insumo
+Quantidade	Numérico	Obrigatório	Quantidade ≥ 1
+Preço Estimado	Numérico	Obrigatório	Preenchido automaticamente com base no preço médio de compra
+Observação	Texto	Opcional	Limite de 500 caracteres
+📋 Modal de Envio de Cotação (WhatsApp)
+👉 Aberto ao clicar no botão "Enviar Cotação"
+
+✅ Exibe mensagem:
+
+plaintext
+Copiar
+Editar
+Olá, (Nome do Vendedor)!
+Segue o link para cotação dos itens que preciso para esta semana:
+(Link para Formulário)
+Aguardo seu retorno o mais breve possível.
+Obrigado!
+✅ Ações:
+
+Confirmar e Enviar → Direciona para WhatsApp Web
+Cancelar → Fecha o modal
+📏 Navegação e Comportamento:
+✅ Clique em uma cotação → Abre detalhes da cotação.
+✅ Excluir cotação → Remove da lista e banco de dados.
+✅ Cotação respondida → Atualiza preço automaticamente na página Planilha de Cotação (#07).
+
+✅ Conclusão:
+✅ O sistema irá verificar dinamicamente o tipo de fornecedor e o status de homologação.
+✅ Cotações serão enviadas para WhatsApp ou geradas manualmente com base no tipo de fornecedor.
+✅ Respostas serão automaticamente integradas à Planilha de Cotação (#07).
+
+Formulário de Cotação (Código: #05'1)
+Objetivo:
+O formulário de cotação será gerado automaticamente pelo sistema após a criação da cotação na página Ordem de Cotação (#05).
+Ele será enviado para os fornecedores através de um link direto incluído na mensagem do WhatsApp ou disponibilizado para preenchimento manual em caso de cotação com e-commerce.
+O formulário permitirá que o fornecedor insira os preços, ajuste as quantidades disponíveis, faça observações e submeta a cotação.
+Após o envio, o sistema sincronizará automaticamente os dados com a página de Ordem de Cotação (#05) e com a Planilha de Cotação (#07).
+Tecnologias e Dependências Necessárias:
+✅ Next.js – Para renderização SSR do formulário.
+✅ React Query – Para atualização em tempo real dos dados após envio.
+✅ Zod – Para validação de entrada e resposta dos dados.
+✅ Radix UI – Para construção de inputs, dropdowns e botões.
+✅ Shadcn UI – Para modais, mensagens de confirmação e toasts.
+✅ Framer Motion – Para efeitos de transição e animação.
+✅ Tailwind CSS – Para estilização responsiva.
+✅ Lucide-react – Para ícones e elementos visuais.
+✅ Day.js – Para manipulação de datas e prazos.
+✅ WhatsApp API (Web) – Para gerar o link e enviar mensagem automaticamente.
+
+💡 Como o Formulário é Gerado:
+O sistema gera um link único para cada cotação criada na página Ordem de Cotação (#05).
+Esse link é incluído automaticamente na mensagem gerada para o fornecedor no WhatsApp:
+plaintext
+Copiar
+Editar
+Olá, (Nome do Vendedor)!
+Segue o link para cotação dos itens que preciso para esta semana:
+(Link para Formulário)
+Aguardo seu retorno o mais breve possível.
+Obrigado!
+O link será no formato:
+👉 https://red.uzo.com/cotacao/ID_DA_COTACAO
+O ID da cotação será um código único gerado automaticamente pelo sistema.
+O link permanecerá válido até o prazo de resposta definido na cotação.
+Após o prazo expirar → O link ficará indisponível e o status será marcado como "Não Respondido".
+📋 Estrutura do Formulário
+✅ O formulário será exibido como uma página independente com URL única.
+✅ Deve ser responsivo e acessível em dispositivos móveis e desktop.
+✅ Estrutura organizada em 3 seções para facilitar o preenchimento pelo fornecedor:
+
+🔹 Primeira Seção: Cabeçalho do Formulário
+Logotipo da Empresa:
+
+No topo do formulário → Carregado automaticamente do cadastro da empresa.
+Título:
+
+Exibe "Cotação de Insumos para [Nome da Empresa do Cliente]"
+Exemplo: "Cotação de Insumos para Restaurante São José"
+Informações da Cotação:
+
+Código da cotação
+Nome da cotação
+Data de emissão
+Prazo de resposta → Mostrado como uma contagem regressiva dinâmica
+Informações do Fornecedor:
+
+Nome do fornecedor (carregado automaticamente com base no ID da cotação)
+Nome do vendedor (se disponível)
+WhatsApp ou telefone (se disponível)
+🔹 Segunda Seção: Tabela de Itens para Cotação
+✅ A tabela de itens deve conter os seguintes campos:
+
+Campo	Tipo de Input	Validação	Comportamento
+Código	Texto (não editável)	Preenchido automaticamente	Clicável para expandir detalhes
+Produto	Texto (não editável)	Preenchido automaticamente	Exibe o nome do produto
+Unidade de Medida	Texto (não editável)	Preenchido automaticamente	Exibe a unidade (kg, un, l)
+Quantidade Solicitada	Texto (não editável)	Preenchido automaticamente	Exibe a quantidade solicitada pelo cliente
+Quantidade Disponível	Input numérico	Obrigatório	Deve ser maior ou igual a zero
+Preço Unitário	Input numérico (formato monetário)	Obrigatório	Permite digitar o valor cotado por unidade
+Preço Total	Cálculo automático	Baseado na quantidade disponível x preço unitário	Atualiza dinamicamente
+Observação	Input de texto	Opcional (até 200 caracteres)	Para o fornecedor incluir comentários sobre o produto
+✅ Comportamento da Tabela:
+
+Preenchimento automático dos campos código, produto e unidade de medida.
+O fornecedor só pode editar os campos de quantidade disponível, preço unitário e observação.
+Se o preço unitário for 0 → Exibe um alerta visual em vermelho.
+Se a quantidade disponível for inferior à quantidade solicitada → Exibe um alerta em amarelo.
+A coluna Preço Total é calculada automaticamente e atualizada em tempo real.
+✅ Validação de Campos:
+
+Preço deve ser maior que zero.
+Quantidade disponível não pode ser negativa.
+Campo de observação não pode ultrapassar 200 caracteres.
+🔹 Terceira Seção: Ações e Envio
+✅ O fornecedor poderá realizar as seguintes ações:
+
+1. Salvar Rascunho
+Permite salvar os valores sem finalizar o formulário.
+A cotação permanece com status "Em Aberto" até ser enviada.
+2. Enviar Cotação
+Ao clicar em "Enviar Cotação":
+O sistema valida os campos preenchidos.
+Se tudo estiver correto → O formulário é enviado.
+Status da cotação muda para "Respondida".
+A cotação será registrada automaticamente na página Ordem de Cotação (#05).
+Os preços cotados serão automaticamente transferidos para a Planilha de Cotação (#07).
+3. Cancelar
+Fecha o formulário sem salvar dados.
+A cotação permanece com status "Em Aberto".
+🔎 Comportamento após Envio:
+✅ Após o envio do formulário:
+
+O sistema registra automaticamente a resposta na página Ordem de Cotação (#05).
+Os valores são atualizados automaticamente na Planilha de Cotação (#07).
+A cotação será exibida na aba "Cotações Respondidas" na página de Ordem de Cotação (#05).
+Se o fornecedor não responder até o prazo → A cotação será exibida na aba "Cotações Não Respondidas".
+🔨 Funcionalidade Adicional:
+✅ Salvamento Automático:
+
+A cada 10 segundos, o sistema salva automaticamente o estado do formulário como rascunho.
+✅ Preenchimento Automático:
+
+O sistema preenche automaticamente o preço médio das últimas compras como sugestão de preço inicial.
+✅ Mobile-First:
+
+Design totalmente adaptável para dispositivos móveis.
+Tabela responsiva com rolagem horizontal.
+✅ Acessibilidade:
+
+Navegação com teclado e compatibilidade com leitores de tela.
+📏 Navegação e Comportamento:
+✅ Clicando no link da cotação → Abre o formulário.
+✅ Enviando o formulário → Atualiza status e valores automaticamente.
+✅ Fechando o formulário sem salvar → Nenhuma alteração é feita.
+
+✅ Conclusão:
+✅ O formulário de cotação é o ponto central de comunicação com o fornecedor.
+✅ Os preços e quantidades serão registrados automaticamente após o envio.
+✅ Integrado dinamicamente com as páginas Ordem de Cotação (#05) e Planilha de Cotação (#07).
+
+Página 06 - Lista de Compras
+(Código: #06)
+
+Objetivo:
+A página de Lista de Compras será o local onde o sistema organiza automaticamente os itens abaixo do estoque mínimo que têm como fornecedor um Atacadista.
+Os itens listados virão diretamente da Gestão de Estoque (#04) após o usuário clicar em "Enviar para compras".
+Os produtos serão agrupados por fornecedor atacadista, permitindo que o usuário:
+Ajuste as quantidades desejadas.
+Classifique os atacadistas de acordo com sua rota de entrega.
+Registre os preços dos produtos comprados.
+Finalize a compra → Os itens serão registrados como entrada automática na página de Gestão de Estoque (#04).
+Tecnologias e Dependências Necessárias:
+✅ Next.js – Para renderização SSR e otimização de desempenho.
+✅ React Query – Para busca e atualização de dados em tempo real.
+✅ Zustand – Para gerenciamento de estado e cache das listas de compras.
+✅ Tailwind CSS – Para estilização rápida e responsiva.
+✅ Shadcn UI – Para construção de componentes como modais, inputs, botões e tabelas.
+✅ Framer Motion – Para efeitos de transição e animação.
+✅ Radix UI – Para popovers, dropdowns e seleção de opções.
+✅ Zod – Para validação dos dados de entrada e resposta da API.
+✅ Lucide-react – Para ícones e indicadores visuais.
+✅ Day.js – Para manipulação de datas e horários.
+✅ Chart.js – Para gráficos de estatísticas de compras e variação de preços.
+
+💡 Como a Lista de Compras é Gerada:
+✅ O sistema gera a lista de compras automaticamente com base nos seguintes critérios:
+
+Se o fornecedor for do tipo Atacadista → Os itens vão para a página de Lista de Compras.
+Se o item estiver homologado para um atacadista específico → O sistema exibe o fornecedor homologado primeiro.
+Se o item NÃO for homologado → O sistema permite múltiplos fornecedores atacadistas na lista de opções.
+Se o valor da compra for inferior ao pedido mínimo do fornecedor → O sistema exibe um alerta visual e impede o envio da compra.
+Componentes Visuais e Estrutura:
+A página será organizada em 3 seções principais:
+
+🔹 Primeira Seção: Cabeçalho da Página
+Título: "Lista de Compras"
+Campo de Busca:
+Permite buscar pelo nome do insumo ou fornecedor.
+Busca em tempo real com debounce de 500ms.
+Dropdown de Filtros:
+Filtro por:
+Nome do fornecedor
+Categoria
+Status de homologação
+Valor total da compra
+Botão "Finalizar Compra":
+Ativado apenas quando o valor mínimo do pedido é atingido.
+🔹 Segunda Seção: Lista de Compras
+✅ Os itens serão exibidos em formato de lista expansível → Agrupados por fornecedor.
+✅ Cada grupo conterá os itens comprados daquele fornecedor específico.
+✅ Organização dos itens:
+
+O sistema permite ordenar os fornecedores por:
+Nome
+Bairro
+Cidade
+Estado
+Ordem manual (drag and drop)
+📝 Informações dos Fornecedores (Grupo):
+Nome do Fornecedor → Exibido em negrito
+Bairro → Bairro do fornecedor
+Cidade → Cidade do fornecedor
+Estado → Estado do fornecedor
+Pedido Mínimo → Valor mínimo para compra daquele fornecedor (em R$)
+Status de Homologação → Exibe ícone verde (homologado) ou cinza (não homologado)
+Total Parcial → Valor total dos itens comprados daquele fornecedor (em R$)
+📋 Estrutura da Tabela de Itens:
+Campo	Tipo de Input	Validação	Comportamento
+Código	Texto (não editável)	Automático	Código único do insumo
+Produto	Texto (não editável)	Automático	Nome do insumo
+Unidade de Medida	Texto (não editável)	Automático	Exibe a unidade (kg, un, l)
+Quantidade	Input numérico	Obrigatório (≥ 0)	Permite ajuste manual pelo usuário
+Preço Unitário	Input numérico (formato monetário)	Obrigatório (≥ 0)	Preenchido automaticamente com base no preço médio
+Preço Total	Cálculo automático	Baseado em quantidade x preço unitário	Atualiza dinamicamente
+Seção	Dropdown	Opcional	O usuário pode definir a seção do produto
+Status	Badge colorido	Automático	Verde (disponível), Vermelho (sem estoque)
+✅ Comportamento da Tabela:
+
+O usuário pode:
+Editar a quantidade → A tabela recalcula o valor total automaticamente.
+Editar o preço → O sistema alerta se o valor estiver muito acima ou abaixo da média de mercado.
+Definir a seção → O sistema registra essa informação para futuras compras.
+✅ Validação Automática:
+
+Se o valor total da compra for inferior ao pedido mínimo:
+O botão "Finalizar Compra" fica desativado.
+O sistema exibe um alerta em vermelho com o valor necessário para atingir o pedido mínimo.
+🔹 Terceira Seção: Estatísticas da Compra
+✅ Estatísticas em tempo real para facilitar o controle da compra:
+
+Valor Total da Compra: Soma de todos os valores da lista.
+Quantidade Total de Itens: Soma de todos os itens registrados.
+Valor Médio por Unidade: Média dos preços unitários dos insumos comprados.
+Valor por Fornecedor:
+Mostra os fornecedores com maior e menor valor total de compra.
+Gráfico de Distribuição de Compra por Categoria:
+Exibe o valor total de compra por categoria em formato de gráfico de pizza.
+📋 Modal de Edição de Item
+✅ O usuário pode editar os itens individualmente através de um modal:
+
+Nome do produto (não editável)
+Quantidade (numérico)
+Preço por unidade (numérico)
+Seção (dropdown)
+Status (badge colorido)
+Salvar e Fechar → Atualiza os valores na lista
+📋 Modal de Finalização de Compra
+👉 Abre automaticamente ao clicar em "Finalizar Compra"
+✅ O modal deve conter:
+
+Lista de produtos
+Fornecedor associado
+Total da compra
+Resumo de desconto ou valor extra (se disponível)
+✅ Ações:
+
+Confirmar e Enviar →
+
+Registra a compra na página de Pedidos (#09)
+Atualiza o estoque automaticamente na página Gestão de Estoque (#04)
+Exibe mensagem de sucesso
+Cancelar → Fecha o modal sem salvar.
+
+🔨 Funcionalidade Adicional:
+✅ Cache Local:
+
+Os itens e valores serão armazenados em cache local para evitar perda de dados.
+✅ Sincronização em Tempo Real:
+
+O sistema deve atualizar automaticamente os valores ao editar um item.
+✅ Modo Offline:
+
+Se o usuário perder a conexão → A lista fica salva localmente até que o sistema reconecte.
+✅ Mobile-First:
+
+Design otimizado para dispositivos móveis com rolagem horizontal na tabela.
+✅ Conclusão:
+✅ A página de Lista de Compras será dinâmica e sincronizada com a Gestão de Estoque (#04).
+✅ As compras serão registradas automaticamente na página Pedidos (#09).
+✅ Sistema inteligente de validação de valores e pedido mínimo.
+
+A sétima página é Planilha de cotação #07. A planilha de cotação recebe as cotações vindas dos formulários #05'1 respondidas pelos fornecedores distribuidor, fabricante e as cotações manuais respondidas pelo usuário de e-commerce. A interface inicial da página carrega automaticamente uma lista de itens cotados, onde cada item contém as seguintes informações:
+Nome do item – Exemplo: "Biscoito Maria Vitarella - Pct C/3, 12un".
+Quantidade – Número de unidades desejadas para compra.
+Unidade de medida – L (litro), KG (Quilo), UN (Unidade).
+Valor unitário – Preço por unidade do item cotado.
+Valor total – Valor total do item, baseado na quantidade e no valor unitário.
+Observação – Indicações como "Estoque insuficiente", "Oferta", "Estoque acabando" (informado pelo fornecedor no formulário de cotação #05'1)
+Última cotação – Preço mais recente registrado do item.
+Variação de preço – Diferença percentual entre a última cotação e o preço atual.
+Status – Classificação do preço em relação ao histórico, podendo ser:
+"Mais barato" (preço caiu em relação à última cotação).
+"Mais caro" (preço subiu em relação à última cotação).
+"Mesmo preço" (nenhuma variação).
+Melhor preço encontrado – Indica o fornecedor que tem o menor preço atual.
+Lista de fornecedores – Exibe todos os fornecedores que cotaram aquele item, com os respectivos preços. (essa listagem deve aparecer ao clicar no item da lista e expande exibindo os fornecedores)
+Seleção Automática do Melhor Preço
+Para agilizar o processo, a função selecionarMelhoresPrecos() percorre todos os itens da planilha e marca automaticamente como selecionado o fornecedor com o menor preço. Assim, o usuário pode otimizar a escolha sem precisar comparar manualmente os valores.
+Busca e Filtros
+A interface inclui um campo de busca (search) que permite ao usuário digitar o nome de um item para localizá-lo rapidamente na planilha. Além disso, há um filtro de período (period), que pode ser ajustado para visualizar cotações diárias, semanais, mensais ou personalizadas.
+Adição e Remoção de Itens
+O usuário pode gerenciar os produtos na cotação através das funções:
+adicionarItem(): Adiciona um novo item à planilha, criando um campo em branco para preenchimento.
+removerItem(id): Remove um item específico da cotação.
+Essas funções permitem que a lista seja personalizada conforme a necessidade.
+Seleção Manual de Fornecedores
+Cada item da lista pode ser expandido ao ser clicado, revelando os fornecedores disponíveis e seus respectivos preços. Dentro desse painel expandido:
+Os fornecedores aparecem em botões individuais, onde cada um exibe:
+Nome do fornecedor.
+Preço cotado por ele para aquele item.
+O usuário pode clicar no fornecedor desejado para selecioná-lo como a opção escolhida para o item. Caso nenhuma seleção seja feita, o sistema deve emitir um alerta indicando.
+A seleção fica visualmente destacada, ajudando na organização e conferência dos valores.
+Estatísticas Gerais da Cotação
+Na parte inferior da planilha, há um painel que exibe resumos quantitativos da cotação:
+Valor Total – Soma do valor total de todos os itens cotados.
+Economia Estimada – Diferença entre a última cotação e o menor preço encontrado para os itens, mostrando quanto pode ser economizado.
+Itens Cotados – Quantidade total de itens listados na planilha.
+Fornecedores Participantes – Número total de fornecedores que enviaram preços para os itens.
+Esses dados ajudam o usuário a analisar rapidamente os impactos da cotação.
+Exportação e Ações Finais
+A interface oferece botões para facilitar a finalização da cotação:
+Selecionar Melhores Preços – Ativa a função que escolhe automaticamente os fornecedores mais baratos.
+Adicionar Novo Item – Insere manualmente um novo produto na planilha.
+Exportar – Permite a exportação da planilha para análise externa.
+Salvar Rascunho – Armazena os dados temporariamente para ajustes posteriores.
+Enviar para Ordem de Compra #08 – Gera um documento com os itens e fornecedores selecionados.
+Ao clicar em "Enviar para Ordem de Compra", os itens escolhidos e seus respectivos fornecedores são enviados para #08.
+
+Página 08 - Ordem de Compra
+(Código: #08)
+
+Objetivo:
+A página de Ordem de Compra permitirá que o usuário gere, revise, finalize e envie pedidos diretamente para os fornecedores selecionados na página Planilha de Cotação (#07) e na página Gestão de Estoque (#04).
+
+A lógica de envio será baseada no tipo de fornecedor:
+
+Distribuidor → Ordem de compra automática após resposta à cotação.
+Fabricante → Ordem de compra automática após resposta à cotação.
+Atacadista → Ordem de compra manual baseada na Lista de Compras (#06).
+E-commerce → Ordem de compra manual após preenchimento na cotação.
+Homologado → Ordem de compra gerada diretamente após seleção do melhor preço na Planilha de Cotação (#07).
+O sistema permitirá que o usuário:
+
+Ajuste as quantidades e preços diretamente na ordem de compra.
+Registre o pagamento.
+Envie a ordem de compra diretamente para o fornecedor via WhatsApp.
+Sincronize automaticamente os dados com o estoque após o status do pedido ser confirmado como "Recebido".
+Tecnologias e Dependências Necessárias:
+✅ Next.js – Para renderização SSR e otimização de desempenho.
+✅ React Query – Para busca e atualização de dados em tempo real.
+✅ Zustand – Para gerenciamento de estado e cache das ordens de compra.
+✅ Tailwind CSS – Para estilização rápida e responsiva.
+✅ Shadcn UI – Para construção de componentes como modais, inputs, botões e tabelas.
+✅ Framer Motion – Para efeitos de transição e animação.
+✅ Radix UI – Para popovers, dropdowns e seleção de opções.
+✅ Zod – Para validação dos dados de entrada e resposta da API.
+✅ Lucide-react – Para ícones e indicadores visuais.
+✅ Day.js – Para manipulação de datas e horários.
+✅ WhatsApp API (Web) – Para envio automático de pedidos.
+✅ Chart.js – Para análise estatística de ordens de compra.
+
+💡 Como os Dados Chegam na Ordem de Compra:
+✅ Os itens serão carregados automaticamente a partir das seguintes fontes:
+
+Planilha de Cotação (#07) → Após o usuário aceitar o preço cotado, o sistema envia automaticamente o item para a Ordem de Compra.
+Lista de Compras (#06) → Após o usuário finalizar a lista de compra, o sistema cria automaticamente uma ordem de compra para o fornecedor atacadista.
+Gestão de Estoque (#04) → Se o item for homologado para um fornecedor específico, o sistema gera automaticamente a ordem de compra após atingir o nível de estoque mínimo.
+Cotação Manual → Para fornecedores de e-commerce, o sistema permite que o usuário preencha o valor diretamente na ordem de compra.
+Componentes Visuais e Estrutura:
+A página será organizada em 3 seções principais:
+
+🔹 Primeira Seção: Cabeçalho da Página
+Título: "Ordem de Compra"
+Campo de Busca:
+Permite buscar pelo nome do insumo ou fornecedor.
+Busca em tempo real com debounce de 500ms.
+Dropdown de Filtros:
+Filtro por:
+Nome do fornecedor
+Categoria
+Status (em aberto, enviado, recebido, cancelado)
+Data de emissão
+Botão "Finalizar Compra":
+Disponível apenas quando o valor mínimo do pedido é atingido.
+Após finalização → Atualiza automaticamente o estoque e o status do pedido.
+🔹 Segunda Seção: Lista de Ordens de Compra
+✅ Os pedidos serão exibidos em formato de cards expansíveis → Organizados por fornecedor e status.
+
+✅ Abas por Status:
+
+Ordem de Compra em Aberto → Fundo amarelo
+Ordem de Compra Enviada → Fundo azul
+Ordem de Compra Recebida → Fundo verde
+Ordem de Compra Cancelada → Fundo vermelho
+📝 Informações do Card de Ordem de Compra:
+Código da Ordem de Compra → Código único gerado automaticamente pelo sistema.
+Nome do Fornecedor → Exibe o nome do fornecedor responsável pelo pedido.
+Data de Emissão → Exibe a data e hora da geração da ordem de compra.
+Quantidade de Itens → Número total de itens na ordem.
+Total Estimado → Valor total da ordem baseado nos preços cotados.
+Status → Exibe o status atual da ordem.
+Botão de Ação → Expande para detalhes ou permite editar a ordem.
+✅ Comportamento dos Cards:
+
+Ordem de Compra em Aberto → O usuário pode editar, excluir ou enviar a ordem.
+Ordem de Compra Enviada → O usuário pode apenas visualizar os detalhes.
+Ordem de Compra Recebida → O sistema registra automaticamente a entrada no estoque.
+Ordem de Compra Cancelada → A ordem fica bloqueada para edição.
+📋 Estrutura da Tabela de Itens:
+Campo	Tipo de Input	Validação	Comportamento
+Código	Texto (não editável)	Automático	Código único do insumo
+Produto	Texto (não editável)	Automático	Nome do insumo
+Unidade de Medida	Texto (não editável)	Automático	Exibe a unidade (kg, un, l)
+Quantidade	Input numérico	Obrigatório (≥ 0)	Permite ajuste manual
+Preço Unitário	Input numérico (formato monetário)	Obrigatório (≥ 0)	Preenchido automaticamente com base no preço cotado
+Preço Total	Cálculo automático	Baseado em quantidade x preço unitário	Atualiza dinamicamente
+Seção	Dropdown	Opcional	Permite definir a seção de armazenamento
+Status	Badge colorido	Automático	Verde (disponível), Vermelho (sem estoque)
+🔹 Terceira Seção: Estatísticas de Compra
+✅ Estatísticas em tempo real para facilitar o controle da compra:
+
+Valor Total de Compras: Soma de todas as ordens de compra emitidas.
+Quantidade Total de Itens Comprados: Soma de todos os itens comprados.
+Custo Médio por Unidade: Média dos preços por unidade comprada.
+Total por Fornecedor:
+Exibe o valor total de compras por fornecedor.
+Gráfico de Distribuição de Compra por Categoria:
+Exibe o valor total de compra por categoria em gráfico de pizza.
+📋 Modal de Envio da Ordem de Compra
+👉 Aberto ao clicar em "Enviar Ordem de Compra"
+
+✅ Exibe mensagem:
+
+plaintext
+Copiar
+Editar
+Olá, (Nome do Vendedor)!
+Segue o pedido referente à cotação enviada anteriormente:
+(Link para PDF com detalhes)
+Aguardo sua confirmação.
+Obrigado!
+✅ Ações:
+
+Confirmar e Enviar → Direciona para WhatsApp Web
+Cancelar → Fecha o modal
+📋 Modal de Confirmação de Recebimento
+✅ Exibe os seguintes dados:
+
+Nome do fornecedor
+Lista de itens
+Quantidades recebidas
+Preço total
+✅ Ações:
+
+Confirmar → Atualiza o estoque e finaliza a compra
+Cancelar → Fecha o modal
+🔨 Funcionalidade Adicional:
+✅ Cache Local
+✅ Sincronização em Tempo Real
+✅ Modo Offline
+✅ Exportação em PDF
+
+✅ Conclusão:
+✅ A página de Ordem de Compra é a última etapa do processo de compra.
+✅ Após o recebimento, o estoque será automaticamente atualizado.
+✅ Os dados serão integrados às páginas de Pedidos (#09) e Estoque (#04).
+
+Página 09 - Pedidos
+(Código: #09)
+
+Objetivo:
+A página de Pedidos permitirá que o usuário acompanhe e gerencie o ciclo completo das ordens de compra emitidas na página Ordem de Compra (#08).
+Os pedidos serão organizados em formato Kanban com status claramente definidos para permitir uma visão clara do fluxo dos pedidos.
+O sistema permitirá que o usuário:
+Acompanhe o status de cada pedido em tempo real.
+Confirme o recebimento parcial ou total dos itens.
+Ajuste automaticamente o estoque após a confirmação de recebimento.
+Edite ou cancele pedidos em aberto.
+Visualize o histórico completo de cada pedido, incluindo variação de preços e tempo de entrega.
+Tecnologias e Dependências Necessárias:
+✅ Next.js – Para renderização SSR e otimização de desempenho.
+✅ React Query – Para busca e atualização de dados em tempo real.
+✅ Zustand – Para gerenciamento de estado e cache dos pedidos.
+✅ Tailwind CSS – Para estilização rápida e responsiva.
+✅ Shadcn UI – Para construção de componentes como modais, inputs, botões e tabelas.
+✅ Framer Motion – Para efeitos de transição e animação.
+✅ Radix UI – Para popovers, dropdowns e seleção de opções.
+✅ Zod – Para validação dos dados de entrada e resposta da API.
+✅ Lucide-react – Para ícones e indicadores visuais.
+✅ Day.js – Para manipulação de datas e horários.
+✅ Chart.js – Para gráficos de análise de desempenho e entrega.
+✅ WhatsApp API (Web) – Para comunicação com os fornecedores.
+
+💡 Como os Pedidos são Criados:
+✅ Os pedidos serão gerados automaticamente a partir das seguintes fontes:
+
+Ordem de Compra (#08) → Quando o usuário finaliza e confirma uma ordem de compra.
+Cotação Manual (#05) → Para fornecedores de e-commerce, o sistema registra manualmente o valor e gera o pedido após a aceitação.
+Lista de Compras (#06) → Após o usuário concluir a compra com atacadistas, o sistema gera automaticamente um pedido com os itens comprados.
+Fluxo do Pedido:
+O pedido é criado automaticamente após a Ordem de Compra ser enviada para o fornecedor.
+O sistema marca o pedido como "Aguardando Confirmação".
+Quando o fornecedor confirma o pedido → O status muda para "Pedido Confirmado".
+Após o recebimento → O sistema marca o status como "Pedido Recebido" e registra a entrada dos produtos no estoque.
+Se o fornecedor não confirmar dentro do prazo → O sistema gera um alerta e o pedido será exibido como "Pedido Não Confirmado".
+O usuário pode editar ou cancelar um pedido enquanto ele estiver em "Aberto" ou "Aguardando Confirmação".
+Componentes Visuais e Estrutura:
+A página será organizada em 3 seções principais:
+
+🔹 Primeira Seção: Cabeçalho da Página
+Título: "Pedidos"
+Campo de Busca:
+Permite buscar pelo nome do fornecedor ou código do pedido.
+Busca em tempo real com debounce de 500ms.
+Dropdown de Filtros:
+Filtro por:
+Nome do fornecedor
+Categoria
+Data de emissão
+Status (Aberto, Confirmado, Recebido, Cancelado)
+Valor Total
+🔹 Segunda Seção: Kanban de Pedidos
+✅ O sistema exibirá os pedidos em formato de Kanban com 4 colunas:
+
+Coluna	Status	Cor	Comportamento
+Aguardando Confirmação	Pedido enviado, aguardando confirmação do fornecedor	Amarelo	O usuário pode editar ou cancelar
+Pedido Confirmado	Pedido confirmado pelo fornecedor, aguardando recebimento	Azul	O usuário pode apenas registrar o recebimento ou cancelar
+Pedido Recebido	Pedido totalmente recebido e registrado no estoque	Verde	Registro de entrada no estoque é feito automaticamente
+Pedido Cancelado	Pedido cancelado pelo usuário ou pelo fornecedor	Vermelho	O pedido é bloqueado para edição
+📝 Informações de cada Card:
+✅ Cada pedido será exibido em formato de card expansível.
+✅ Os cards terão os seguintes campos:
+
+Campo	Descrição	Comportamento
+Código do Pedido	Código único para identificação	Clicável → Abre os detalhes completos
+Nome do Fornecedor	Nome do fornecedor associado	Exibe o nome comercial
+Data de Emissão	Data e hora da criação do pedido	Formatada por Day.js
+Prazo de Entrega	Prazo definido na cotação ou ordem de compra	Mostra a contagem regressiva
+Valor Total	Valor total do pedido em R$	Atualiza automaticamente com ajustes
+Quantidade de Itens	Número total de itens no pedido	Exibe o número total
+Status	Status atual do pedido	Badge com cor correspondente
+✅ Comportamento dos Cards:
+
+O usuário pode arrastar os cards entre as colunas para alterar o status.
+Se o usuário mover para "Pedido Confirmado" → O sistema exibe um modal para o usuário confirmar os itens.
+Se o usuário mover para "Pedido Recebido" → O sistema registra automaticamente a entrada dos produtos no estoque.
+📋 Modal de Detalhamento do Pedido
+👉 Aberto ao clicar em um card de pedido
+
+✅ Exibe detalhes completos do pedido:
+
+Nome do fornecedor
+Lista de itens cotados
+Quantidade solicitada
+Preço unitário
+Valor total
+Prazo de entrega
+Histórico de movimentações do pedido
+✅ Ações Disponíveis:
+
+Editar Pedido → Apenas para pedidos em "Aguardando Confirmação".
+Cancelar Pedido → Apenas para pedidos em "Aguardando Confirmação".
+Confirmar Recebimento → Apenas para pedidos em "Confirmado".
+📋 Modal de Recebimento de Pedido
+👉 Aberto ao mover o pedido para "Recebido"
+
+✅ O modal exibirá os seguintes dados:
+
+Nome do fornecedor
+Lista de itens cotados
+Quantidades recebidas
+Preço por unidade
+Valor total
+Diferença entre o pedido e o valor real recebido
+✅ Validação Automática:
+
+Se o valor recebido for diferente do valor cotado → O sistema exibe um alerta para o usuário justificar a diferença.
+Se a quantidade recebida for maior ou menor → O sistema atualiza automaticamente o estoque com a diferença registrada como ajuste.
+✅ Ações:
+
+Confirmar Recebimento → Atualiza automaticamente o estoque e o status do pedido.
+Cancelar → Fecha o modal sem salvar alterações.
+🔹 Terceira Seção: Estatísticas de Pedidos
+✅ Estatísticas detalhadas para análise de desempenho:
+
+Total de Pedidos: Número total de pedidos criados.
+Pedidos Recebidos: Número total de pedidos registrados como "Recebidos".
+Valor Total Comprado: Soma do valor de todos os pedidos registrados.
+Tempo Médio de Confirmação: Tempo médio para o fornecedor confirmar o pedido.
+Tempo Médio de Entrega: Tempo médio entre a emissão do pedido e o recebimento.
+Fornecedores com Melhor Desempenho: Lista de fornecedores com maior frequência de resposta e melhores preços.
+🔨 Funcionalidade Adicional:
+✅ Cache Local
+✅ Sincronização em Tempo Real
+✅ Modo Offline
+✅ Exportação em PDF
+✅ Análise de Tempo de Entrega
+✅ Gráfico de Pedidos por Status
+
+✅ Conclusão:
+✅ A página de Pedidos fornece um controle completo sobre o ciclo de compras.
+✅ O sistema atualiza automaticamente o estoque após confirmação de recebimento.
+✅ Os dados são integrados dinamicamente com as páginas de Estoque (#04) e Planilha de Cotação (#07).
+
+Página 10 - Ficha Técnica
+(Código: #10)
+
+Objetivo:
+A página de Ficha Técnica permitirá ao usuário:
+✅ Cadastrar e gerenciar fichas técnicas de produtos prontos e intermediários.
+✅ Calcular automaticamente o custo com base nos ingredientes e rendimento.
+✅ Gerar impacto direto no estoque após o uso dos ingredientes em preparações.
+✅ Substituir automaticamente ingredientes com base na disponibilidade e preço.
+✅ Recalcular automaticamente o preço de venda com base na variação de preço dos insumos.
+✅ Gerar alertas sobre aumento de custo, queda de margem e variação de CMV.
+✅ Registrar o CMV real e teórico com base na movimentação de estoque e variação de preço.
+Tipos de Fichas Técnicas:
+Produto Pronto → Produto final que será vendido diretamente na página Registro de Vendas (#11).
+Produto Intermediário → Produto que será usado como insumo em outras fichas técnicas.
+👉 Diferenças de cálculo:
+✅ Produto Pronto → Cálculo com base em custo + margem → Define preço de venda sugerido.
+✅ Produto Intermediário → Cálculo com base apenas em custo → Define preço por unidade e preço por kg.
+
+Tecnologias e Dependências Necessárias:
+✅ Next.js – Para renderização SSR e otimização de desempenho.
+✅ React Query – Para busca e atualização de dados em tempo real.
+✅ Zustand – Para gerenciamento de estado e cache das fichas técnicas.
+✅ Tailwind CSS – Para estilização rápida e responsiva.
+✅ Shadcn UI – Para construção de componentes como modais, inputs, botões e tabelas.
+✅ Framer Motion – Para efeitos de transição e animação.
+✅ Radix UI – Para popovers, dropdowns e seleção de opções.
+✅ Zod – Para validação dos dados de entrada e resposta da API.
+✅ Lucide-react – Para ícones e indicadores visuais.
+✅ Day.js – Para manipulação de datas e horários.
+✅ Chart.js – Para análise de CMV e variação de preços.
+
+Objetivo Principal
+A página de Ficha Técnica é central para o controle de custos, pois permite:
+
+Cadastro, edição e exclusão de fichas técnicas, tanto de produtos prontos quanto de produtos intermediários.
+Gerenciamento detalhado de ingredientes (insumos) com cálculo de rendimento, custo total, custo por porção, custo por kg, margem de lucro (no caso de produtos prontos) e CMV (%).
+Integração direta com o Estoque (#04) para abater insumos de acordo com as vendas ou produção de intermediários.
+Substituição automática de insumos quando não houver estoque de determinado produto, exibindo alertas e sugerindo fornecedores alternativos.
+Análise e sugestão de otimizações de custos, seja trocando insumos por versões mais econômicas ou ajustando o preço de venda para manter a margem de lucro.
+Diferença Entre Produto Pronto e Produto Intermediário
+Produto Pronto
+
+É vendido diretamente (aparece na página de Registro de Vendas #11).
+Possui cálculo de custo + margem de lucro, resultando em Preço de Venda Sugerido.
+O usuário pode praticar um preço de venda diferente do sugerido (chamado "Preço de Venda Praticado"). O sistema, então, recalcula a margem com base nesse preço efetivo.
+O rendimento em porções define quantas unidades de venda podem ser obtidas de uma preparação (ex.: 1 pizza = 8 fatias).
+Produto Intermediário
+
+Não é vendido diretamente; serve de insumo para outros produtos ou preparações (ex.: “molho base”, “caldo de legumes”, “massa de pizza semipronta”).
+É cadastrado no estoque como um item na aba "Estoque de Produtos Intermediários".
+Tem cálculo de custo total, custo por kg e custo por porção (caso o usuário queira fracioná-lo).
+Não há margem de lucro ou preço de venda público, pois não é vendido isoladamente. O custo do produto intermediário impacta no custo do produto pronto que o utiliza.
+Cálculo de Rendimento (Bruto/Líquido) em Cada Ingrediente
+1. Conceito de Rendimento
+Cada ingrediente na ficha técnica pode ter uma perda (descarte de parte não aproveitável) ou redução durante o processo de preparo (por exemplo, limpeza de carnes, cascas de legumes ou evaporação de líquidos).
+Rendimento (%) define qual fração do peso bruto se torna peso líquido efetivamente utilizável na receita.
+2. Campos de Rendimento no Ingrediente
+Para cada ingrediente adicionado, teremos:
+
+Quantidade Bruta: quanto do insumo o usuário precisa antes de qualquer preparo ou limpeza.
+Rendimento (%): qual a porcentagem do peso bruto que efetivamente se converte em peso líquido.
+Se o usuário já souber o rendimento, ele preenche direto o valor (ex.: 80%).
+Se o usuário não souber o rendimento, o sistema permite dois campos: Peso Bruto e Peso Líquido → e então calcula o rendimento automaticamente, usando a fórmula:
+Rendimento
+=
+Peso L
+ı
+ˊ
+quido
+Peso Bruto
+×
+100
+Rendimento= 
+Peso Bruto
+Peso L 
+ı
+ˊ
+ quido
+​
+ ×100
+Quantidade Líquida: é a quantidade de ingrediente efetivamente utilizada na ficha (após limpeza, cocção etc.).
+Fórmula quando o rendimento já é conhecido:
+Quantidade L
+ı
+ˊ
+quida
+=
+Quantidade Bruta
+×
+Rendimento
+100
+Quantidade L 
+ı
+ˊ
+ quida= 
+100
+Quantidade Bruta×Rendimento
+​
+ 
+Se o usuário entrou com pesos bruto e líquido, o sistema preenche esse campo automaticamente.
+3. Impacto no Custo (Preço Bruto/Líquido)
+O Preço Bruto é o valor de compra (médio) de um insumo na quantidade bruta.
+Com um rendimento menor que 100%, o custo aumenta proporcionalmente para a porção líquida (pois se perde parte do produto).
+O Preço Líquido reflete o valor real do ingrediente aproveitado:
+Pre
+c
+¸
+o L
+ı
+ˊ
+quido
+=
+Pre
+c
+¸
+o Bruto
+Rendimento
+/
+100
+(quando h
+a
+ˊ
+ perda)
+Pre 
+c
+¸
+​
+ o L 
+ı
+ˊ
+ quido= 
+Rendimento/100
+Pre 
+c
+¸
+​
+ o Bruto
+​
+ (quando h 
+a
+ˊ
+  perda)
+ou, em outra lógica,
+Pre
+c
+¸
+o L
+ı
+ˊ
+quido
+=
+Pre
+c
+¸
+o Bruto
+×
+(
+1
+Rendimento
+/
+100
+)
+.
+Pre 
+c
+¸
+​
+ o L 
+ı
+ˊ
+ quido=Pre 
+c
+¸
+​
+ o Bruto×( 
+Rendimento/100
+1
+​
+ ).
+Lista de Ingredientes na Ficha
+Cada ingrediente terá as seguintes colunas:
+
+Código do Insumo
+
+Puxado automaticamente do Cadastro de Insumos (#03).
+Clicável para abrir detalhes do insumo (fornecedor, estoque atual, preço médio histórico etc.).
+Nome do Insumo
+
+Selecionado via dropdown ou busca.
+Caso o insumo não esteja cadastrado, o usuário deve cadastrar primeiro na página de Insumos (#03).
+Quantidade Bruta
+
+Quantidade necessária antes de qualquer perda.
+Campo numérico (ex.: 2,5 kg).
+Unidade de Medida
+
+kg, g, L, ml, un etc.
+Vem do cadastro do insumo.
+Preço Bruto
+
+Valor médio de compra, calculado com base no preço do estoque.
+Atualiza automaticamente sempre que o preço do insumo muda no estoque (se a opção de atualização automática estiver habilitada).
+É multiplicado pela quantidade bruta para chegar no custo total bruto.
+Rendimento (%)
+
+Percentual que o usuário informa ou que o sistema calcula com base em peso líquido e peso bruto.
+Quantidade Líquida
+
+Campo calculado automaticamente, resultante de 
+Quantidade Bruta
+×
+(
+Rendimento
+/
+100
+)
+Quantidade Bruta×(Rendimento/100).
+Preço Líquido
+
+Valor correspondente ao custo efetivo considerando a perda.
+Calculado com base em 
+Pre
+c
+¸
+o Bruto
+/
+(
+Rendimento
+/
+100
+)
+Pre 
+c
+¸
+​
+ o Bruto/(Rendimento/100) ou pelo fator de correção.
+Ações
+
+Editar ingrediente.
+Remover ingrediente da lista.
+Selecionar Substituto: caso haja falta no estoque do insumo principal, o sistema pode trocar automaticamente pelo insumo substituto.
+Cálculos de Custos Finais
+1. Produto Pronto
+Custo Total (R$)
+Soma de todos os preços líquidos dos ingredientes.
+
+Rendimento em Porções
+Quantas porções (ou unidades de venda) a receita rende. Exemplo:
+
+1 torta que rende 10 fatias.
+1 pizza que rende 8 fatias.
+Custo por Porção (R$)
+
+Custo por Por
+c
+¸
+a
+˜
+o
+=
+Custo Total
+Nº de Por
+c
+¸
+o
+˜
+es
+Custo por Por 
+c
+¸
+​
+  
+a
+˜
+ o= 
+Nº de Por 
+c
+¸
+​
+  
+o
+˜
+ es
+Custo Total
+​
+ 
+Custo por kg (R$)
+Se o produto final tem um peso total informado (pós-cocção), então:
+
+Custo por kg
+=
+Custo Total
+Peso L
+ı
+ˊ
+quido Final (em kg)
+Custo por kg= 
+Peso L 
+ı
+ˊ
+ quido Final (em kg)
+Custo Total
+​
+ 
+Margem de Lucro (%)
+Se o usuário define um Preço de Venda Praticado ou utiliza o Preço de Venda Sugerido, a margem de lucro é:
+
+Margem
+=
+Pre
+c
+¸
+o de Venda
+−
+Custo Total
+Pre
+c
+¸
+o de Venda
+×
+100
+Margem= 
+Pre 
+c
+¸
+​
+ o de Venda
+Pre 
+c
+¸
+​
+ o de Venda−Custo Total
+​
+ ×100
+CMV (%)
+
+CMV
+=
+Custo Total
+Pre
+c
+¸
+o de Venda
+×
+100
+CMV= 
+Pre 
+c
+¸
+​
+ o de Venda
+Custo Total
+​
+ ×100
+Preço de Venda Sugerido (R$)
+Se o usuário quer uma margem de X%, o sistema calcula:
+
+Pre
+c
+¸
+o de Venda Sugerido
+=
+Custo Total
+1
+−
+(
+Margem Desejada
+/
+100
+)
+Pre 
+c
+¸
+​
+ o de Venda Sugerido= 
+1−(Margem Desejada/100)
+Custo Total
+​
+ 
+Preço de Venda Praticado (R$)
+
+O usuário pode inserir manualmente.
+Se for menor que o custo total, o sistema alerta que há prejuízo (CMV > 100%).
+Se for muito próximo ao custo, o sistema alerta margem perigosa.
+2. Produto Intermediário
+Custo Total (R$)
+Soma de todos os ingredientes (preços líquidos).
+
+Rendimento em Porções (Opcional)
+
+Se for algo como “molho que rende 5 litros”, pode-se definir que cada litro é 1 “porção” intermediária.
+Custo por Porção (R$) (Opcional)
+
+Custo por Por
+c
+¸
+a
+˜
+o
+=
+Custo Total
+Nº de Por
+c
+¸
+o
+˜
+es de Uso
+Custo por Por 
+c
+¸
+​
+  
+a
+˜
+ o= 
+Nº de Por 
+c
+¸
+​
+  
+o
+˜
+ es de Uso
+Custo Total
+​
+ 
+Custo por kg (R$)
+Se o produto intermediário tiver peso final:
+
+Custo por kg
+=
+Custo Total
+Peso L
+ı
+ˊ
+quido Final (em kg)
+Custo por kg= 
+Peso L 
+ı
+ˊ
+ quido Final (em kg)
+Custo Total
+​
+ 
+Não há margem de lucro ou preço de venda pois não é comercializado diretamente, mas sim utilizado como insumo em Produto Pronto.
+
+Modal de Criação / Edição de Ficha Técnica
+Seleção do Tipo de Produto
+
+Toggle “Produto Pronto” (verde) ou “Produto Intermediário” (azul).
+Campos de Entrada
+
+Nome do Produto
+Categoria
+Imagem (opcional)
+Rendimento
+Em Peso Final (ex.: 2 kg final) e/ou
+Em Porções (ex.: 8 porções).
+Lista de Ingredientes
+
+Tabela com colunas:
+Código do insumo
+Nome do insumo
+Quantidade Bruta
+Unidade (kg, g, l, un etc.)
+Preço Bruto (puxado do estoque)
+Rendimento (%) ou campo para inserir peso líquido
+Quantidade Líquida (calculada)
+Preço Líquido (calculado)
+Cálculo de Custos
+
+Custo Total (R$)
+Custo por Porção (R$)
+Custo por kg (R$)
+No caso de Produto Pronto:
+Margem de Lucro (%)
+Preço de Venda Sugerido (R$)
+Preço de Venda Praticado (R$) (caso o usuário queira inserir manualmente)
+CMV (%)
+Botões de Ação
+
+Salvar e Fechar
+Duplicar Ficha (cria uma cópia idêntica para variações)
+Cancelar (descartar alterações)
+Substituição de Ingredientes e Avisos de Falta de Estoque
+Detecção de Falta de Estoque
+
+Se, na hora de produção ou venda, o sistema detectar que determinado insumo (ou produto intermediário) está zerado, ele exibirá uma mensagem:
+“Não há estoque suficiente de [Insumo X]. Deseja substituir por outro disponível?”
+Caso exista um produto substituto cadastrado, o sistema faz a troca automática do insumo.
+Substituto Definido no Estoque
+
+O usuário pode cadastrar insumos substitutos na própria ficha técnica ou no cadastro de insumos, permitindo trocas automáticas.
+Quando o sistema retorna ao insumo principal no estoque (caso reabasteça), a ficha técnica volta ao insumo original.
+Integração com Outras Páginas
+Gestão de Estoque (#04)
+
+Quando o usuário produz um Produto Intermediário, ele retira insumos do Estoque Fixo e gera um novo item no Estoque de Produtos Intermediários.
+Quando um Produto Pronto é vendido, o sistema verifica a ficha técnica e abate insumos ou produtos intermediários do estoque.
+Registro de Vendas (#11)
+
+Ao registrar a venda de um Produto Pronto, o sistema faz a saída automática dos ingredientes (caso o registro de movimentação automática esteja habilitado).
+Pode haver um alerta se a venda exceder o estoque disponível de algum insumo ou intermediário.
+Relatórios (CMV) (#12)
+
+O CMV Teórico é calculado com base nessas fichas técnicas.
+O CMV Real é calculado com base nas movimentações efetivas do estoque.
+Diferenças podem indicar desperdício, erros de registro ou variação de rendimento.
+Sugestões de Otimização de Custos
+Comparação de Fornecedores
+
+Se um insumo tiver grande peso no custo total, o sistema sugere buscar melhores cotações (#05) ou considerar outro fornecedor.
+Análise de Rendimento
+
+Se determinado ingrediente estiver com rendimento abaixo do normal, o sistema alerta perda exagerada.
+Sugere padronizar o processo (fichas técnicas + treinamento).
+Ajuste de Preço de Venda
+
+Se o custo total subiu, o sistema sugere reajustar o preço para manter a margem desejada.
+Ou sugere um substituto mais barato para manter o preço de venda.
+Estatísticas Específicas da Ficha Técnica
+Histórico de Custos: evolução do custo total ao longo do tempo (quando os insumos sofrem variação de preço).
+Histórico de Variação de Rendimento: se o usuário alterar o rendimento frequentemente, o sistema registra e mostra possíveis inconsistências.
+Alertas de Itens Críticos: se algum insumo subiu 30% de preço, o sistema alerta na ficha que pode estar “inflando” o custo.
+Exemplo de Fluxo Completo
+O usuário cadastra uma Ficha Técnica de “Pizza Grande”:
+
+Define que rende 8 fatias.
+Adiciona farinha, fermento, molho (este pode ser um produto intermediário, ex.: “Molho Base”), queijo, presunto etc.
+Define a quantidade bruta de cada ingrediente e o rendimento (%).
+O sistema calcula a quantidade líquida e o preço líquido de cada insumo.
+No final, gera:
+Custo Total = R$ 15,00
+Custo por Porção (fatia) = R$ 1,87
+Preço de Venda Sugerido = R$ 40,00 (caso deseje 60% de margem, por exemplo)
+CMV = 37,5% caso o usuário venda a R$ 40,00.
+Quando o usuário registra uma venda de 10 pizzas, o sistema abate automaticamente a quantidade de farinha, queijo, presunto etc. do estoque (se a opção de movimentação automática estiver ativa).
+
+Se o usuário produz “Molho Base” (produto intermediário), retira tomates, cebola, alho do Estoque Fixo e gera um item “Molho Base (2 litros)” no Estoque de Intermediários. Se outra ficha técnica (“Pizza Grande”) utilizar “Molho Base”, então a pizza retira do Estoque de Intermediários.
+
+Conclusão Detalhada
+A Página de Ficha Técnica (#10) é complexa e central, pois interliga:
+
+Estoque (#04)
+Insumos (#03)
+Registro de Vendas (#11)
+CMV (#12)
+Cálculos Fundamentais:
+
+Rendimento (%) – Calculado ingrediente a ingrediente, influenciando diretamente o custo.
+Custo Total – Soma dos custos líquidos dos ingredientes.
+Custo por Porção/Kg – Fundamental para precificação.
+Margem de Lucro (%) / CMV (%) – Aplica-se apenas a Produto Pronto.
+Substituição de Insumos – Se faltou ingrediente, o sistema pede troca ou indica substituto.
+O sistema faz ajustes automáticos de custo conforme:
+
+Variação de preços (novas cotações, últimas compras, promoções etc.).
+Mudanças de rendimento (se o usuário atualizar a ficha com novos valores de perda).
+Alertas de custo excessivo, perda de margem ou CMV alto ficam destacados na interface.
+
+Página 11 – Registro de Vendas
+(Código: #11)
+
+Objetivo Principal
+A página de Registro de Vendas permitirá que o usuário:
+
+✅ Registre vendas de produtos prontos e combos com base nas fichas técnicas cadastradas (#10).
+✅ Deduz automaticamente os insumos utilizados nos produtos e combos vendidos, afetando o estoque fixo e o estoque de intermediários (#04).
+✅ Calcule automaticamente o CMV Real com base nos insumos retirados do estoque.
+✅ Permita o cadastro de combos, onde o sistema:
+
+Identifica automaticamente os ingredientes de cada produto incluso no combo.
+Deduz automaticamente cada insumo do estoque conforme a ficha técnica dos produtos individuais.
+✅ Organize as vendas por data (listas diárias).
+✅ Permita ajustes manuais de valores, correção de vendas e substituição de insumos (se faltar estoque).
+✅ Analise o impacto das vendas na margem de lucro e CMV por produto, por combo e por dia.
+Tecnologias e Dependências Necessárias:
+✅ Next.js – Para renderização SSR e otimização de desempenho.
+✅ React Query – Para busca e atualização de dados em tempo real.
+✅ Zustand – Para gerenciamento de estado e cache das vendas registradas.
+✅ Tailwind CSS – Para estilização rápida e responsiva.
+✅ Shadcn UI – Para construção de componentes como modais, inputs, botões e tabelas.
+✅ Framer Motion – Para efeitos de transição e animação.
+✅ Radix UI – Para popovers, dropdowns e seleção de opções.
+✅ Zod – Para validação dos dados de entrada e resposta da API.
+✅ Lucide-react – Para ícones e indicadores visuais.
+✅ Day.js – Para manipulação de datas e horários.
+✅ Chart.js – Para análise de CMV, margem de lucro e faturamento.
+✅ WhatsApp API (Web) – Para envio de relatórios ou confirmação de vendas.
+
+💡 Como os Dados São Relacionados
+✅ Os produtos disponíveis para venda (incluindo combos) serão puxados automaticamente das Fichas Técnicas (#10).
+✅ O preço sugerido será baseado no preço definido na ficha técnica, mas o usuário poderá inserir um valor diferente.
+✅ Se o preço de venda for menor que o custo → O sistema recalcula a margem com base no valor real de venda.
+✅ O sistema permitirá registro manual ou importação automatizada de vendas por meio de API de POS (ex.: integração com sistemas de caixa).
+✅ Combos serão tratados como produtos compostos:
+
+O sistema puxa os ingredientes de cada item do combo (conforme a ficha técnica de cada produto).
+O sistema calcula automaticamente o impacto nos insumos e estoque com base nos ingredientes individuais.
+Componentes Visuais e Estrutura
+A página será organizada em 4 seções principais:
+
+🔹 Primeira Seção: Cabeçalho da Página
+Título: "Registro de Vendas"
+Campo de Busca:
+Permite buscar pelo nome do produto, combo ou categoria.
+Busca em tempo real com debounce de 500ms.
+Dropdown de Filtros:
+Filtro por:
+Nome do produto
+Categoria
+Data da venda
+CMV (%)
+Margem de lucro (%)
+Valor total
+Botão "Registrar Nova Venda":
+Abre o Modal de Registro de Venda.
+Permite registro de produtos prontos e combos.
+🔹 Segunda Seção: Lista de Vendas Registradas (Organizada por Data)
+✅ Exibida em formato de lista → Cada data será exibida como uma aba expansível.
+✅ Os produtos vendidos aparecerão como itens de linha dentro da aba.
+
+✅ Organização das Listas por Data:
+
+As datas estarão ordenadas do dia mais recente para o mais antigo.
+Cada data será exibida com:
+Data Completa
+Total de Faturamento (valor total vendido no dia)
+Quantidade Total de Produtos Vendidos
+CMV Médio (%)
+Margem Média (%)
+✅ Colunas de Cada Item Vendido:
+
+Campo	Descrição	Comportamento
+Data/Hora	Data e hora da venda registrada	Formatada com Day.js
+Produto/Combo	Nome do produto ou combo vendido	Clicável → Abre detalhes da ficha técnica associada
+Quantidade	Quantidade vendida	Campo numérico – permite ajuste
+Preço Unitário (R$)	Preço praticado na venda	Campo numérico – permite ajuste
+Preço Total (R$)	Preço total da venda (Qtd x Preço Unitário)	Calculado automaticamente
+CMV (%)	Custo de Mercadoria Vendida	Calculado automaticamente
+Margem (%)	Margem de lucro na venda	Calculado automaticamente
+Ações	Editar, Excluir, Substituir Insumo	Abertura de modais
+✅ Comportamento dos Itens Vendidos:
+
+O usuário pode editar diretamente a quantidade vendida ou o preço praticado.
+Se o preço praticado for menor que o custo total → Sistema alerta margem negativa.
+Se o preço praticado for muito maior que o preço sugerido → Sistema alerta possibilidade de erro de digitação.
+Se o usuário alterar a quantidade → O sistema recalcula automaticamente o impacto no estoque.
+🔹 Terceira Seção: Estatísticas de Vendas
+✅ Estatísticas atualizadas em tempo real com base nas vendas registradas:
+
+Faturamento Total (R$) – Soma total das vendas no período selecionado.
+Quantidade de Produtos Vendidos – Soma de todas as unidades vendidas.
+Margem Média (%) – Média das margens de lucro registradas por produto.
+CMV Médio (%) – Média ponderada do CMV com base nos preços de venda reais.
+Produtos Mais Vendidos – Lista dos 5 produtos mais vendidos no período.
+Combos Mais Vendidos – Lista dos combos mais vendidos no período.
+Produtos com Maior CMV – Produtos com maior custo em relação ao preço de venda.
+Produtos com Menor Margem – Produtos com margem negativa ou muito baixa.
+Gráfico de Evolução de Vendas – Linha de evolução com faturamento por dia.
+📋 Modal de Registro de Venda
+👉 Aberto ao clicar em "Registrar Nova Venda"
+
+Campos do Modal:
+✅ Data da Venda → Data e hora.
+✅ Produto Vendido → Dropdown dinâmico com todos os produtos cadastrados na ficha técnica, incluindo combos.
+✅ Quantidade Vendida → Campo numérico.
+✅ Preço Unitário → Sugestão com base na ficha técnica, mas editável pelo usuário.
+✅ Preço Total → Calculado automaticamente (Qtd x Preço Unitário).
+✅ CMV (%) → Calculado automaticamente com base nos custos registrados na ficha técnica.
+✅ Margem (%) → Calculado automaticamente.
+
+Comportamento do Modal:
+Se for um combo, o sistema exibirá o preço e os itens incluídos.
+Salvar e Confirmar → A venda será registrada, o sistema abaterá automaticamente os ingredientes do estoque.
+Cancelar → Fecha o modal sem registrar nada.
+✅ Conclusão:
+✅ Página dinâmica, com impacto direto no estoque e relatórios.
+✅ Sistema inteligente de cálculo de CMV e margem em tempo real.
+✅ Combos tratados como categorias compostas com dedução automática de insumos.
+
+Relatórios – Aba 1 – CMV
+(Código: #12.1)
+
+Objetivo Principal
+A aba de CMV permitirá que o usuário:
+
+✅ Compare o CMV Teórico com o CMV Real para entender se o controle de custos está alinhado com o planejado.
+✅ Identifique diferenças entre o valor previsto e o valor real gasto com insumos.
+✅ Receba alertas automáticos sobre variações inesperadas nos custos.
+✅ Análise de causas para divergência entre CMV Teórico e CMV Real (desperdício, erro de registro, variação de preço de insumo).
+✅ Sugestões automáticas para reduzir o CMV, incluindo:
+
+Troca de fornecedor.
+Ajuste de ficha técnica.
+Recalcular preço de venda sugerido.
+Tecnologias e Dependências Necessárias:
+✅ Next.js – Para renderização SSR e otimização de desempenho.
+✅ React Query – Para busca e atualização de dados em tempo real.
+✅ Zustand – Para gerenciamento de estado e cache dos relatórios.
+✅ Tailwind CSS – Para estilização rápida e responsiva.
+✅ Shadcn UI – Para construção de componentes como tabelas, gráficos e inputs.
+✅ Framer Motion – Para efeitos de transição e animação.
+✅ Radix UI – Para popovers, dropdowns e seleção de opções.
+✅ Zod – Para validação de entrada de dados.
+✅ Lucide-react – Para ícones e indicadores visuais.
+✅ Day.js – Para manipulação de datas e períodos.
+✅ Chart.js – Para gráficos de evolução de CMV e custos.
+✅ WhatsApp API (Web) – Para envio de relatórios e análise externa.
+
+💡 Definições Fundamentais de CMV
+CMV Teórico
+👉 Custo baseado na ficha técnica e na quantidade registrada de vendas.
+👉 Calculado com base nos insumos utilizados na ficha técnica, considerando o preço médio de compra e o rendimento informado.
+👉 Representa o custo ideal em uma situação de operação sem perdas ou variação de rendimento.
+
+CMV Real
+👉 Custo efetivo registrado no estoque após as vendas ou preparo de produto intermediário.
+👉 Inclui fatores reais como desperdício, quebra de estoque, erro de registro e variação de preço de compra.
+👉 Se o CMV Real > CMV Teórico → Indica problemas operacionais, desperdício ou variação de preço inesperada.
+
+Fórmulas de CMV
+1. Cálculo de CMV Real (Baseado no estoque)
+CMV Real
+=
+Estoque Inicial
++
+Compras
+−
+Estoque Final
+CMV Real=Estoque Inicial+Compras−Estoque Final
+Estoque Inicial = Valor dos insumos disponíveis no início do período.
+Compras = Valor total das compras de insumos no período.
+Estoque Final = Valor dos insumos disponíveis ao final do período.
+2. Cálculo de CMV Teórico (Baseado nas Fichas Técnicas)
+CMV Te
+o
+ˊ
+rico
+=
+∑
+(
+Custo por Por
+c
+¸
+a
+˜
+o
+×
+Quantidade Vendida
+)
+CMV Te 
+o
+ˊ
+ rico=∑(Custo por Por 
+c
+¸
+​
+  
+a
+˜
+ o×Quantidade Vendida)
+Custo por Porção = Valor unitário de cada ingrediente na ficha técnica, considerando rendimento e preço médio.
+Quantidade Vendida = Total de unidades vendidas no período selecionado.
+3. Diferença entre CMV Real e Teórico
+Diferen
+c
+¸
+a
+=
+CMV Real
+−
+CMV Te
+o
+ˊ
+rico
+Diferen 
+c
+¸
+​
+ a=CMV Real−CMV Te 
+o
+ˊ
+ rico
+Se a diferença for positiva → Houve custo maior que o esperado → Problema com desperdício ou variação de preço.
+Se a diferença for negativa → Houve custo menor que o esperado → Possível erro de registro ou ajuste de preço.
+
+Componentes Visuais e Estrutura
+A página será organizada em 4 seções principais:
+
+🔹 Primeira Seção: Cabeçalho da Página
+Título: "Relatório de CMV"
+Campo de Busca:
+Permite buscar por produto, combo, fornecedor ou categoria.
+Busca em tempo real com debounce de 500ms.
+Dropdown de Filtros:
+Período (hoje, semanal, mensal, anual ou personalizado).
+Produto ou combo.
+Categoria.
+Fornecedor.
+Botão de Exportação:
+Exportar para Excel ou PDF.
+🔹 Segunda Seção: Resumo de CMV
+✅ Estatísticas resumidas do período selecionado:
+
+Indicador	Valor	Diferença
+CMV Teórico (%)	38,5%	-
+CMV Real (%)	42,7%	+4,2% (Excesso de custo)
+Diferença de Custo (R$)	R$ 850,00	Alerta
+Desperdício (%)	5%	Alerta de excesso de perda
+Margem Bruta (%)	58%	Queda de margem de lucro
+✅ Comportamento:
+
+Se o CMV Real for maior que o CMV Teórico → Sistema destaca em vermelho com alerta de variação negativa.
+Se o CMV Real for menor que o CMV Teórico → Sistema destaca em verde com possibilidade de otimização de custo.
+🔹 Terceira Seção: Gráfico de Evolução de CMV
+✅ Gráfico de linha exibindo a variação do CMV Real e CMV Teórico ao longo do tempo.
+✅ Permite alternar entre visualização por dia, semana e mês.
+✅ Pontos críticos (desvios) são destacados em vermelho.
+✅ Exemplo:
+
+Se um insumo subiu 20% de preço → Ponto crítico destacado em vermelho.
+Se houve desperdício acima de 5% → Ponto crítico destacado em vermelho.
+🔹 Quarta Seção: Tabela Detalhada de CMV por Produto
+✅ Exibida em formato de tabela expansível.
+
+✅ Colunas:
+
+Produto	Categoria	CMV Teórico (%)	CMV Real (%)	Diferença (%)	Perda (R$)	Status
+Pizza Grande	Pizza	35%	42%	+7%	R$ 120,00	Alerta
+Molho Base	Produto Intermediário	20%	25%	+5%	R$ 20,00	Alerta
+✅ Comportamento:
+
+Linhas com variação maior que 5% são destacadas em vermelho.
+Produtos com margem abaixo de 15% são destacados em amarelo.
+O usuário pode clicar em cada produto → Abre o detalhamento da ficha técnica.
+✅ Conclusão:
+✅ Relatório detalhado com foco em otimização de custo.
+✅ Sistema destaca automaticamente variações e desperdícios.
+✅ Sugestões de ajuste baseadas em preço, rendimento e estoque.
+
+Relatórios – Aba 2 – Variação de Preços
+(Código: #12.2)
+
+Objetivo Principal
+A aba de Variação de Preços permitirá que o usuário:
+
+✅ Visualize a evolução dos preços de compra ao longo de um período definido (diário, semanal, mensal ou personalizado).
+✅ Compare preços médios por fornecedor para encontrar oportunidades de economia.
+✅ Avalie o impacto de variação de preços nos custos de produção e no CMV.
+✅ Receba sugestões automáticas para:
+
+Substituição de fornecedores em caso de aumento brusco de preços.
+Ajuste de preço de venda para manter a margem de lucro.
+Revisão de fichas técnicas para trocar insumos por opções mais baratas.
+Tecnologias e Dependências Necessárias:
+✅ Next.js – Para renderização SSR e otimização de desempenho.
+✅ React Query – Para busca e atualização de dados em tempo real.
+✅ Zustand – Para gerenciamento de estado e cache dos relatórios.
+✅ Tailwind CSS – Para estilização rápida e responsiva.
+✅ Shadcn UI – Para construção de componentes como tabelas, gráficos e inputs.
+✅ Framer Motion – Para efeitos de transição e animação.
+✅ Radix UI – Para popovers, dropdowns e seleção de opções.
+✅ Zod – Para validação de entrada de dados.
+✅ Lucide-react – Para ícones e indicadores visuais.
+✅ Day.js – Para manipulação de datas e períodos.
+✅ Chart.js – Para gráficos de evolução de preços.
+✅ WhatsApp API (Web) – Para envio de relatórios e análise externa.
+
+💡 Como os Dados São Relacionados
+✅ Os preços médios serão extraídos automaticamente dos dados registrados na página Pedidos (#09).
+✅ Cada variação de preço será registrada com base na data de compra e no fornecedor.
+✅ Os preços médios serão exibidos por:
+
+Insumo
+Fornecedor
+Categoria
+Período
+✅ O sistema usará esses dados para recalcular:
+
+CMV Teórico → Se o preço de um insumo variar, o sistema sugere ajuste na ficha técnica.
+Margem de Lucro → Se o preço médio aumentar, o sistema sugere alteração no preço de venda para manter a margem.
+Componentes Visuais e Estrutura
+A página será organizada em 4 seções principais:
+
+🔹 Primeira Seção: Cabeçalho da Página
+Título: "Relatório de Variação de Preços"
+Campo de Busca:
+Permite buscar por produto, fornecedor ou categoria.
+Busca em tempo real com debounce de 500ms.
+Dropdown de Filtros:
+Filtro por Período (hoje, semanal, mensal, anual ou personalizado).
+Filtro por Produto.
+Filtro por Fornecedor.
+Filtro por Categoria.
+Botão de Exportação:
+Exportar para Excel ou PDF.
+Opção de exportar apenas os produtos que tiveram aumento de preço ou queda de preço.
+🔹 Segunda Seção: Resumo da Variação de Preços
+✅ Estatísticas resumidas da variação de preços no período selecionado:
+
+Indicador	Valor	Diferença
+Preço Médio de Compra	R$ 12,50	+2,5% (em relação ao período anterior)
+Produtos com Alta de Preço (%)	32%	Alerta em vermelho
+Produtos com Queda de Preço (%)	18%	Destacado em verde
+Diferença Média (%)	+1,7%	Alerta em amarelo
+Fornecedor com Maior Alta (%)	Fornecedor A	+8%
+Fornecedor com Maior Queda (%)	Fornecedor C	-5%
+✅ Comportamento:
+
+Se a variação média de preços for maior que 5% → Sistema gera alerta em vermelho.
+Se a variação for positiva para o usuário (redução de preços) → Sistema destaca em verde.
+🔹 Terceira Seção: Gráfico de Evolução de Preços
+✅ Gráfico de linha exibindo a evolução dos preços médios de compra ao longo do tempo.
+✅ Permite alternar entre visualização por dia, semana e mês.
+✅ Linhas com tendências de alta são destacadas em vermelho.
+✅ Linhas com tendências de queda são destacadas em verde.
+✅ Exemplo:
+
+Se o preço de queijo muçarela subiu 15% em um mês → Linha vermelha com alerta no ponto crítico.
+Se o preço de presunto caiu 10% → Linha verde com alerta de oportunidade de compra.
+🔹 Quarta Seção: Tabela Detalhada de Variação de Preços
+✅ Exibida em formato de tabela expansível.
+
+✅ Colunas:
+
+Produto	Fornecedor	Preço Médio Atual	Preço Médio Anterior	Variação (%)	Status
+Queijo Muçarela	Fornecedor A	R$ 32,00	R$ 28,00	+14%	Alerta
+Presunto	Fornecedor C	R$ 15,00	R$ 17,00	-12%	Queda
+Tomate	Fornecedor B	R$ 6,00	R$ 5,50	+9%	Alerta
+✅ Comportamento:
+
+Linhas com aumento maior que 5% → Destacadas em vermelho com alerta.
+Linhas com queda maior que 5% → Destacadas em verde com recomendação de ajuste.
+O usuário pode clicar no produto → Abre um modal com o histórico de preços detalhado por fornecedor.
+📋 Modal de Histórico de Preços
+👉 Aberto ao clicar em um produto na tabela
+
+✅ Exibe o histórico completo de preços do insumo:
+
+Data da compra
+Fornecedor
+Preço de Compra
+Variação (%) em relação à compra anterior
+✅ Sugestões Automáticas:
+
+Se um fornecedor oferece um preço menor → O sistema sugere ajuste de ficha técnica.
+Se o preço subiu muito → O sistema sugere buscar cotação com outro fornecedor.
+✅ Conclusão:
+✅ Relatório detalhado de comportamento de preços.
+✅ Sugestões automáticas de otimização de custos.
+✅ Sistema detecta e destaca variações anormais de preço.
+✅ Impacto direto nos cálculos de CMV e ficha técnica.
+
+Relatórios – Aba 3 – Projeção de Demanda
+(Código: #12.3)
+
+Objetivo Principal
+A aba de Projeção de Demanda permitirá que o usuário:
+
+✅ Preveja automaticamente o comportamento futuro das vendas com base no histórico de vendas.
+✅ Simule diferentes cenários de crescimento para planejar estoque e produção de forma mais eficiente.
+✅ Avalie o impacto das projeções de demanda nos seguintes fatores:
+
+Consumo de insumos.
+Custo de produção (CMV).
+Margem de lucro.
+Faturamento bruto e líquido.
+✅ Receba sugestões automáticas para ajustar preços, fichas técnicas e quantidades compradas com base na demanda futura prevista.
+Tecnologias e Dependências Necessárias:
+✅ Next.js – Para renderização SSR e otimização de desempenho.
+✅ React Query – Para busca e atualização de dados em tempo real.
+✅ Zustand – Para gerenciamento de estado e cache dos relatórios.
+✅ Tailwind CSS – Para estilização rápida e responsiva.
+✅ Shadcn UI – Para construção de componentes como tabelas, gráficos e inputs.
+✅ Framer Motion – Para efeitos de transição e animação.
+✅ Radix UI – Para popovers, dropdowns e seleção de opções.
+✅ Zod – Para validação de entrada de dados.
+✅ Lucide-react – Para ícones e indicadores visuais.
+✅ Day.js – Para manipulação de datas e períodos.
+✅ Chart.js – Para gráficos de previsão de demanda.
+✅ Machine Learning Model – Para análise preditiva com base em comportamento de vendas.
+
+💡 Como os Dados São Relacionados
+✅ A projeção será baseada nos seguintes fatores:
+
+Histórico de vendas → Página Registro de Vendas (#11).
+Fichas técnicas → Página Ficha Técnica (#10) para definir consumo de insumos por unidade vendida.
+Preços de compra → Página Pedidos (#09) para calcular o impacto da variação de preço nos custos futuros.
+Estoque → Página Gestão de Estoque (#04) para garantir que os insumos estejam disponíveis para o cenário de venda projetado.
+✅ A previsão usará um modelo de Machine Learning que analisará o comportamento passado e ajustará os padrões com base em:
+
+Tendências sazonais (ex.: maior demanda por sorvetes no verão).
+Dias da semana (ex.: maior venda de pizzas aos finais de semana).
+Promoções passadas (ex.: picos de vendas em datas promocionais).
+Variação de preço de insumos (se o custo de um insumo subiu, a previsão ajusta o CMV).
+Componentes Visuais e Estrutura
+A página será organizada em 4 seções principais:
+
+🔹 Primeira Seção: Cabeçalho da Página
+Título: "Projeção de Demanda"
+Campo de Busca:
+Permite buscar por produto, combo ou categoria.
+Busca em tempo real com debounce de 500ms.
+Dropdown de Filtros:
+Filtro por Período (semanal, mensal, trimestral, anual ou personalizado).
+Filtro por Produto ou Combo.
+Filtro por Categoria.
+Filtro por Fornecedor.
+Botão de Simulação:
+Abre o Modal de Simulação de Cenário.
+Permite configurar manualmente o crescimento esperado (ex.: +10% de demanda).
+Botão de Exportação:
+Exportar relatório para Excel ou PDF.
+Opção de exportar apenas os produtos com crescimento de demanda maior que X%.
+🔹 Segunda Seção: Resumo de Projeção de Demanda
+✅ Estatísticas resumidas da previsão para o período selecionado:
+
+Indicador	Valor Projetado	Diferença (%)
+Faturamento Projetado (R$)	R$ 50.000,00	+12%
+CMV Projetado (%)	38%	+3%
+Margem Média (%)	62%	-2%
+Produtos com Maior Crescimento (%)	Pizza Grande (+15%)	-
+Produtos com Maior Queda (%)	Hamburguer (-5%)	-
+✅ Comportamento:
+
+Se a projeção de CMV estiver acima de 5% → Alerta em vermelho.
+Se a margem média cair abaixo de 15% → Alerta em vermelho.
+Produtos com aumento significativo de demanda → Sistema sugere ajuste de preço e controle de estoque.
+🔹 Terceira Seção: Gráfico de Evolução de Projeção de Demanda
+✅ Gráfico de linha exibindo a projeção de vendas para o período selecionado.
+✅ Permite alternar entre visualização por dia, semana e mês.
+✅ Linhas com tendência de alta são destacadas em verde.
+✅ Linhas com tendência de queda são destacadas em vermelho.
+
+✅ Exemplo:
+
+Se a venda de pizza grande está prevista para crescer 15% em agosto → Linha verde com projeção destacada.
+Se a venda de hamburguer está prevista para cair 5% → Linha vermelha com recomendação para ajuste de preço ou insumo.
+🔹 Quarta Seção: Tabela Detalhada de Projeção de Demanda
+✅ Exibida em formato de tabela expansível.
+
+✅ Colunas:
+
+Produto	Categoria	Quantidade Atual	Projeção de Venda	Diferença (%)	Status
+Pizza Grande	Pizza	200 unidades	230 unidades	+15%	Aumento
+Hamburguer	Lanche	150 unidades	140 unidades	-5%	Queda
+✅ Comportamento:
+
+Produtos com aumento de demanda maior que 10% → Destacados em verde.
+Produtos com queda de demanda maior que 5% → Destacados em vermelho.
+Se o aumento de demanda ultrapassar a capacidade de estoque → Sistema gera um alerta sugerindo ajuste na compra.
+📋 Modal de Simulação de Crescimento de Demanda
+👉 Aberto ao clicar em "Simular Crescimento"
+
+✅ O usuário pode definir:
+
+Período de simulação (semanal, mensal, trimestral).
+Taxa de crescimento (%) por produto ou categoria.
+Definir preço de venda projetado (caso o usuário queira aumentar ou reduzir o preço).
+✅ Sistema calcula automaticamente:
+
+Consumo previsto de insumos.
+CMV projetado.
+Margem de lucro esperada.
+Impacto direto sobre o estoque.
+✅ Conclusão:
+✅ Relatório de previsão de demanda altamente detalhado.
+✅ Sugestões automáticas para ajustes de preço e estoque.
+✅ Sistema destaca variações positivas e negativas de demanda.
+✅ Impacto direto na precificação e controle de estoque.
+
+Relatórios – Aba 4 – Sugestões de Redução de Custos
+(Código: #12.4)
+
+Objetivo Principal
+A aba de Sugestões de Redução de Custos permitirá que o usuário:
+
+✅ Receba sugestões automáticas para reduzir custos com insumos e produção.
+✅ Otimize o CMV e a margem de lucro ajustando insumos, preços de venda e fornecedores.
+✅ Elimine desperdícios e erros operacionais com base na diferença entre CMV Real e CMV Teórico.
+✅ Ajuste fichas técnicas para corrigir custos excessivos.
+✅ Identifique fornecedores mais baratos para melhorar a competitividade nos preços de compra.
+
+Tecnologias e Dependências Necessárias:
+✅ Next.js – Para renderização SSR e otimização de desempenho.
+✅ React Query – Para busca e atualização de dados em tempo real.
+✅ Zustand – Para gerenciamento de estado e cache dos relatórios.
+✅ Tailwind CSS – Para estilização rápida e responsiva.
+✅ Shadcn UI – Para construção de componentes como tabelas, gráficos e inputs.
+✅ Framer Motion – Para efeitos de transição e animação.
+✅ Radix UI – Para popovers, dropdowns e seleção de opções.
+✅ Zod – Para validação de entrada de dados.
+✅ Lucide-react – Para ícones e indicadores visuais.
+✅ Day.js – Para manipulação de datas e períodos.
+✅ Chart.js – Para gráficos de análise de custos e desperdícios.
+✅ Machine Learning Model – Para análise de padrões e sugestões inteligentes.
+
+💡 Como os Dados São Relacionados
+✅ As sugestões serão baseadas em:
+
+Histórico de compras → Página Pedidos (#09).
+Histórico de vendas → Página Registro de Vendas (#11).
+Fichas técnicas → Página Ficha Técnica (#10).
+Controle de estoque → Página Gestão de Estoque (#04).
+Variação de preços → Página Relatório de Variação de Preços (#12.2).
+✅ A análise será realizada pelo sistema com base em:
+
+Diferença entre CMV Real e CMV Teórico.
+Diferença de preço de insumos entre fornecedores.
+Diferença entre preço de venda sugerido e preço de venda praticado.
+Perda ou desperdício não contabilizado corretamente.
+Tendência de baixa margem de lucro ou prejuízo em determinados produtos.
+✅ O sistema sugerirá ações em três níveis:
+
+Nível 1 – Correções simples (ex.: troca de fornecedor, ajuste de preço de venda).
+Nível 2 – Correções estruturais (ex.: revisão de ficha técnica, ajuste de rendimento).
+Nível 3 – Mudança estratégica (ex.: retirada de produtos não lucrativos).
+Componentes Visuais e Estrutura
+A página será organizada em 4 seções principais:
+
+🔹 Primeira Seção: Cabeçalho da Página
+Título: "Sugestões de Redução de Custos"
+Campo de Busca:
+Permite buscar por produto, fornecedor ou categoria.
+Busca em tempo real com debounce de 500ms.
+Dropdown de Filtros:
+Filtro por Nível de Ação (Nível 1, 2 ou 3).
+Filtro por Produto ou Combo.
+Filtro por Categoria.
+Filtro por Fornecedor.
+Botão de Exportação:
+Exportar relatório para Excel ou PDF.
+🔹 Segunda Seção: Resumo das Sugestões
+✅ Estatísticas resumidas do impacto das sugestões para o período selecionado:
+
+Indicador	Valor Atual	Valor com Ajustes	Diferença (%)
+CMV (%)	38%	35%	-3%
+Margem Média (%)	62%	65%	+3%
+Economia Anual Projeta (R$)	R$ 22.500,00	R$ 25.000,00	+11%
+Redução de Desperdício (%)	5%	3%	-2%
+Número de Sugestões Ativas	12	-	-
+✅ Comportamento:
+
+Se o sistema detectar um potencial de economia maior que 5% → Sugestão é destacada em verde.
+Se o sistema detectar que o CMV pode ser reduzido sem perda de qualidade → Sugestão é destacada em azul.
+Se o sistema detectar desperdício oculto ou perda de insumo → Sugestão é destacada em vermelho com alerta.
+🔹 Terceira Seção: Gráfico de Impacto das Sugestões
+✅ Gráfico de barras exibindo o impacto das sugestões na economia projetada.
+✅ Permite alternar entre visualização por dia, semana e mês.
+
+✅ Exemplo:
+
+Se a troca de fornecedor de queijo muçarela gerar economia de R$ 2.000,00/mês → Barra destacada em verde.
+Se a retirada de um insumo da ficha técnica reduzir o CMV em 1% → Barra destacada em azul.
+🔹 Quarta Seção: Tabela de Sugestões Detalhadas
+✅ Exibida em formato de tabela expansível.
+
+✅ Colunas:
+
+Produto	Sugestão	Economia Estimada (R$)	Impacto (%)	Status
+Queijo Muçarela	Trocar fornecedor (Fornecedor B)	R$ 2.000,00/mês	-3% no CMV	Ativo
+Presunto	Revisar ficha técnica	R$ 1.500,00/mês	-2% no CMV	Ativo
+Molho Base	Aumentar rendimento para 90%	R$ 750,00/mês	-1% no CMV	Ativo
+✅ Comportamento:
+
+O usuário pode aceitar ou rejeitar cada sugestão.
+O sistema automaticamente recalcula o impacto nas margens e no CMV após cada decisão.
+📋 Modal de Detalhamento de Sugestões
+👉 Aberto ao clicar em uma sugestão na tabela
+
+✅ Exibe detalhes completos da sugestão:
+
+Insumo sugerido para troca.
+Ficha técnica sugerida para revisão.
+Impacto direto sobre CMV e margem.
+✅ Botões de Ação:
+
+Aceitar Sugestão → Ajusta ficha técnica e recalcula CMV.
+Rejeitar Sugestão → Ignora a sugestão e marca como resolvida.
+✅ Conclusão:
+✅ Relatório estratégico de economia de custos.
+✅ Sugestões inteligentes com base em dados reais.
+✅ Redução direta de CMV e melhora na margem de lucro.
+
+A décima terceira página é a página de Programa de Indicação #13. Essa página deve gerar um código, próprio para cada usuário para que eles indiquem outros potenciais clientes. Deve aparecer também quais são os níveis dos benefício, quantos usuários eles já indicou, quantos usuários ainda estão ativos. Crie também mais elementos visuais.
+
+Página 14 – Planos
+(Código: #14)
+
+Objetivo Principal
+A página de Planos permitirá que o usuário:
+
+✅ Visualize os planos disponíveis e os benefícios de cada um.
+✅ Faça upgrade para planos superiores com um clique.
+✅ Gerencie o ciclo de pagamento (mensal, trimestral ou anual).
+✅ Receba alertas sobre status de pagamento (próximo vencimento, falha no pagamento).
+✅ Consulte o histórico de pagamentos e o valor total pago.
+✅ Permita downgrade ou cancelamento com opções de confirmação.
+
+Tecnologias e Dependências Necessárias:
+✅ Next.js – Para renderização SSR e otimização de desempenho.
+✅ React Query – Para busca e atualização de dados em tempo real.
+✅ Zustand – Para gerenciamento de estado e cache dos dados de planos.
+✅ Tailwind CSS – Para estilização rápida e responsiva.
+✅ Shadcn UI – Para construção de componentes como cartões, tabelas, inputs e botões.
+✅ Framer Motion – Para efeitos de transição e animação.
+✅ Radix UI – Para popovers, dropdowns e seleção de opções.
+✅ Zod – Para validação de entrada de dados.
+✅ Lucide-react – Para ícones e indicadores visuais.
+✅ Stripe – Para processamento de pagamentos (cartão de crédito, boleto e Pix).
+✅ Day.js – Para manipulação de datas e ciclos de pagamento.
+✅ Email API – Para envio de notificações de pagamento e status do plano.
+
+💡 Como os Dados São Relacionados
+✅ Os planos estarão cadastrados em uma tabela no banco de dados com as seguintes informações:
+
+Nome do plano.
+Preço mensal, trimestral e anual.
+Benefícios incluídos.
+Limite de transações, produtos e fornecedores.
+✅ Quando o usuário selecionar um plano → O sistema enviará os dados de pagamento para o Stripe → Após confirmação → O plano é ativado automaticamente.
+✅ O status do plano será atualizado automaticamente e exibido na página de Configurações (#15).
+✅ Caso o pagamento falhe → O sistema exibirá um alerta e permitirá a tentativa de pagamento novamente.
+✅ O sistema permitirá upgrade ou downgrade automático, com ajuste proporcional no valor do ciclo de pagamento.
+Componentes Visuais e Estrutura
+A página será organizada em 4 seções principais:
+
+🔹 Primeira Seção: Cabeçalho da Página
+Título: "Planos e Assinaturas"
+Dropdown de Filtros:
+Filtro por Período (mensal, trimestral, anual).
+Filtro por Status (ativo, pendente, cancelado).
+Filtro por Benefício (exemplo: "Acesso ao Clube Reduzo").
+Botão de Histórico de Pagamento:
+Abre um modal com o histórico completo de pagamentos.
+Botão de Exportação:
+Exportar para Excel ou PDF.
+🔹 Segunda Seção: Plano Ativo
+✅ Exibe um card destacado com o plano atual do usuário:
+
+✅ Campos exibidos:
+
+Nome do plano.
+Valor mensal/trimestral/anual (exemplo: "R$ 199,00/mês").
+Data de renovação (exemplo: "Renovação em 30 de março de 2025").
+Benefícios ativos (exemplo: "Acesso ao Clube Reduzo", "Consultoria mensal", etc.).
+Botão "Alterar Ciclo de Pagamento" → Abre um modal para o usuário definir se deseja pagar mensal, trimestral ou anualmente.
+Botão "Cancelar Assinatura" → Disponível apenas se o plano estiver ativo.
+✅ Comportamento:
+
+Se o usuário cancelar → Plano permanecerá ativo até o fim do ciclo de pagamento.
+Se o pagamento falhar → O sistema exibirá um alerta e permitirá nova tentativa.
+Se o usuário alterar o ciclo de pagamento → O sistema recalculará automaticamente o valor proporcional.
+🔹 Terceira Seção: Tabela Comparativa de Planos
+✅ Exibida em formato de grade comparativa com três colunas (uma para cada plano):
+
+✅ Exemplo de Planos:
+
+Plano	Mensal (R$)	Trimestral (R$)	Anual (R$)	Benefícios
+Plano Básico	R$ 99,00	R$ 279,00	R$ 999,00	- Até 10 fornecedores
+- Até 50 produtos
+- Sem acesso ao Clube Reduzo
+Plano Pro	R$ 199,00	R$ 549,00	R$ 1.999,00	- Até 50 fornecedores
+- Até 500 produtos
+- Acesso ao Clube Reduzo
+Plano Empresarial	R$ 299,00	R$ 849,00	R$ 2.999,00	- Fornecedores ilimitados
+- Produtos ilimitados
+- Consultoria mensal gratuita
+- Suporte prioritário
+✅ Destaques Visuais:
+
+O plano atual será destacado com uma borda em verde.
+Benefícios exclusivos serão destacados com um ícone de coroa.
+Planos disponíveis para upgrade terão o botão "Upgrade" disponível.
+Se o usuário já estiver no plano mais alto → Botão de upgrade ficará desativado.
+✅ Comportamento:
+
+Se o usuário clicar em "Upgrade" → Abre um modal de confirmação com o valor proporcional a ser cobrado.
+Se o usuário clicar em "Downgrade" → Abre um modal de confirmação explicando o que será perdido.
+🔹 Quarta Seção: Modal de Confirmação de Pagamento
+👉 Aberto ao clicar em "Upgrade" ou "Alterar Ciclo de Pagamento"
+
+✅ Campos:
+
+Nome do plano selecionado.
+Valor proporcional (se for um upgrade/downgrade).
+Forma de pagamento (cartão de crédito, boleto ou Pix).
+Data de início do novo ciclo.
+✅ Comportamento:
+
+Se o usuário confirmar o pagamento → O sistema ativa o plano imediatamente.
+Se o pagamento falhar → O sistema exibirá um alerta e permitirá nova tentativa.
+Se o plano for um downgrade → O plano permanecerá ativo até o fim do ciclo atual antes de aplicar o novo plano.
+🔹 Quinta Seção: Histórico de Pagamento
+✅ Exibida em formato de tabela expansível com:
+
+Data	Valor Pago (R$)	Forma de Pagamento	Status
+2025-01-01	R$ 199,00	Cartão de Crédito	Pago
+2024-12-01	R$ 199,00	Cartão de Crédito	Pago
+2024-11-01	R$ 199,00	Cartão de Crédito	Falha
+✅ Comportamento:
+
+Permite filtrar por período e status.
+Se o pagamento falhar → Aparece botão para tentar novamente.
+✅ Conclusão:
+✅ Sistema de planos robusto e automatizado.
+✅ Incentivo direto para migração para planos superiores.
+✅ Controle detalhado de pagamento e benefícios.
+
+A décima quinta página é a de Configurações #15. Essa página o usuário poderá configurar toda a plataforma, seus dados pessoais, etc.
+
+
+Página 16 – Ajuda
+(Código: #16)
+
+Objetivo Principal
+A página de Ajuda permitirá que o usuário:
+
+✅ Resolva problemas de forma autônoma com artigos detalhados.
+✅ Consulte o status da plataforma para verificar se há algum problema técnico em andamento.
+✅ Fale diretamente com o suporte técnico via chat, WhatsApp ou email.
+✅ Abra e gerencie tickets de suporte para acompanhamento detalhado.
+✅ Assista a tutoriais para entender melhor as funcionalidades da plataforma.
+
+Tecnologias e Dependências Necessárias:
+✅ Next.js – Para renderização SSR e otimização de desempenho.
+✅ React Query – Para busca e atualização de dados em tempo real.
+✅ Zustand – Para gerenciamento de estado e cache das informações de suporte.
+✅ Tailwind CSS – Para estilização rápida e responsiva.
+✅ Shadcn UI – Para construção de componentes como listas, inputs e modais.
+✅ Framer Motion – Para efeitos de transição e animação.
+✅ Radix UI – Para popovers, dropdowns e seleção de opções.
+✅ Zod – Para validação de entrada de dados.
+✅ Lucide-react – Para ícones e indicadores visuais.
+✅ Firebase – Para gerenciamento de autenticação e abertura de tickets.
+✅ WhatsApp API – Para ativação de suporte via WhatsApp.
+✅ SMTP – Para envio de notificações de tickets por email.
+✅ Lottie – Para exibição de animações nos tutoriais e alertas visuais.
+✅ YouTube API – Para exibição de tutoriais diretamente na interface.
+
+💡 Como os Dados São Relacionados
+✅ Os artigos de ajuda serão cadastrados em uma tabela específica no banco de dados com as seguintes informações:
+
+Título
+Descrição curta
+Conteúdo detalhado (em HTML formatado)
+Tags de busca
+Data de publicação
+Categoria (exemplo: "Configuração", "Pedidos", "CMV", "Relatórios")
+✅ Os tickets de suporte serão armazenados em uma tabela separada, contendo:
+ID do ticket
+Status do ticket (Aberto, Em Análise, Resolvido)
+Histórico de comunicação
+✅ O sistema deve exibir notificações sobre incidentes em andamento diretamente na interface de ajuda.
+✅ Os tutoriais em vídeo serão vinculados via YouTube API → O sistema carregará dinamicamente os vídeos com base nas tags e categorias associadas.
+Componentes Visuais e Estrutura
+A página será organizada em 5 seções principais:
+
+🔹 Primeira Seção: Cabeçalho da Página
+Título: "Central de Ajuda"
+Campo de Busca:
+Permite buscar por título, palavra-chave ou categoria.
+Busca em tempo real com debounce de 500ms.
+Dropdown de Filtros:
+Filtro por Categoria (Pedidos, Fichas Técnicas, Estoque, Configurações, etc.).
+Filtro por Status (Aberto, Resolvido, Em Análise).
+Botão "Abrir Novo Ticket":
+Abre um modal para o usuário detalhar o problema.
+🔹 Segunda Seção: Lista de Artigos de Ajuda
+✅ Exibe uma lista de artigos disponíveis para consulta rápida:
+
+✅ Exemplo de Formato:
+
+Título	Categoria	Data	Visualizações	Status
+Como cadastrar um fornecedor	Fornecedores	2025-03-14	1.245	Ativo
+Como criar uma ficha técnica	Fichas Técnicas	2025-03-12	867	Ativo
+Como fazer uma projeção de demanda	Relatórios	2025-03-10	525	Ativo
+✅ Comportamento:
+
+Se o usuário clicar em um artigo → O artigo se abrirá em uma página de detalhe.
+Os artigos mais populares (com mais visualizações) aparecerão primeiro na lista.
+Os artigos resolvidos recentemente terão um ícone de "check".
+Se o artigo resolver o problema → O usuário poderá marcar como "Resolvido".
+🔹 Terceira Seção: Status da Plataforma
+✅ Exibe status de funcionamento em tempo real:
+
+✅ Plataforma funcional → Status em verde.
+⚠️ Manutenção em andamento → Status em amarelo.
+❌ Instabilidade detectada → Status em vermelho.
+✅ Detalhes exibidos:
+
+Tipo de incidente.
+Tempo estimado para resolução.
+Link para detalhes técnicos (se disponível).
+✅ Comportamento:
+
+Se a plataforma estiver instável → Exibe um botão para abrir um ticket diretamente relacionado ao problema.
+Se a plataforma estiver em manutenção → Exibe um cronômetro regressivo até a resolução.
+🔹 Quarta Seção: Tutoriais em Vídeo
+✅ Exibe uma galeria de vídeos organizados por categoria:
+
+Fornecedores
+Insumos
+Estoque
+Pedidos
+Relatórios
+✅ Comportamento:
+
+O vídeo é carregado diretamente da YouTube API.
+O usuário pode assistir em tela cheia sem sair da plataforma.
+Os vídeos com mais visualizações aparecerão primeiro.
+🔹 Quinta Seção: Tickets de Suporte
+✅ Exibe o histórico completo de tickets do usuário:
+
+✅ Exemplo de Formato:
+
+ID do Ticket	Título	Data	Status	Ação
+#1024	Problema com cadastro de fornecedor	2025-03-14	Aberto	Ver detalhes
+#1023	Problema com estoque	2025-03-12	Resolvido	Ver detalhes
+#1022	Problema com login	2025-03-10	Em análise	Ver detalhes
+✅ Comportamento:
+
+Se o usuário clicar em um ticket → Abre um modal com o histórico completo de comunicação.
+Se o ticket estiver aberto → O usuário pode inserir novas informações e responder diretamente.
+Se o ticket estiver resolvido → O usuário pode reabrir o ticket se o problema persistir.
+📋 Modal de Abertura de Ticket
+👉 Aberto ao clicar em "Abrir Novo Ticket"
+
+✅ Campos:
+
+Título
+Descrição detalhada
+Categoria
+Prioridade (Alta, Média, Baixa)
+✅ Comportamento:
+
+Após abrir o ticket → O sistema envia um email de confirmação.
+O sistema atribuirá automaticamente o ticket a um atendente de suporte.
+✅ Conclusão:
+✅ Página completa para suporte e ajuda técnica.
+✅ Sistema de tickets integrado para controle de problemas.
+✅ Tutoriais em vídeo para autoatendimento.
+✅ Status da plataforma exibido em tempo real.

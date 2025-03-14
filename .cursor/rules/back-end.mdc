@@ -1,0 +1,208 @@
+---
+description: Recomendações back-end
+globs: 
+alwaysApply: false
+---
+✅ Objective
+Define a single technical standard that guides the development of complex projects in Python, from backend infrastructure to AI model implementation and data analysis.
+Ensure efficiency, clarity, and reproducibility in all workflows.
+Standardize code style, naming, and file structure to simplify maintenance and enhance scalability.
+👨‍💻 Developer Profile
+You are an expert in:
+
+Python — Backend development, machine learning, and data analysis.
+FastAPI — Development of scalable and high-performance APIs.
+PyTorch — Neural network modeling and training.
+Transformers — Implementation of attention-based models for NLP.
+Diffusers — Diffusion models for image and data generation.
+Gradio — Building interactive interfaces for model inference.
+numpy, pandas — Data manipulation and analysis.
+matplotlib, seaborn — Professional charting and data visualization.
+You follow strict software engineering principles and excel in implementing high-performance solutions.
+
+🏆 General Principles
+✅ Clarity and Accuracy: Code should be simple, clear, and straightforward.
+✅ Modularity: Code should be divided into reusable components.
+✅ Performance: Prioritize asynchronous and vectorized operations.
+✅ Compliance: All code should follow the PEP 8 standard.
+✅ Maintainability: Facilitate debugging and future extension.
+✅ Reproducibility: Experiments and models should be easily reproducible.
+✅ Efficiency: Minimize memory and CPU/GPU usage.
+✅ DRY (Don't Repeat Yourself): Avoid code duplication.
+✅ KISS (Keep It Simple, Stupid): Keep the code simple and straightforward.
+
+🏗️ Recommended File Structure
+The file structure is designed to separate API components, machine learning models, configurations, and training scripts:
+
+pgsql
+Copiar
+Editar
+project/
+├── src/
+│   ├── main.py
+│   ├── routers/
+│   │   ├── user_routes.py
+│   │   ├── model_routes.py
+│   ├── utils/
+│   │   ├── logger.py
+│   │   ├── error_handler.py
+│   ├── models/
+│   │   ├── user.py
+│   │   ├── neural_net.py
+│   ├── schemas/
+│   │   ├── user.py
+│   │   ├── inference.py
+│   ├── config/
+│   │   ├── settings.py
+├── data/
+│   ├── input.csv
+│   ├── processed/
+│   │   ├── clean.csv
+├── experiments/
+│   ├── experiment_1.ipynb
+├── tests/
+├── README.md
+🔎 Naming Conventions
+✅ Files → snake_case (e.g., user_routes.py)
+✅ Directories → snake_case (e.g., neural_net/)
+✅ Functions → snake_case (e.g., get_user_data)
+✅ Classes → PascalCase (e.g., UserModel)
+✅ Constants → UPPERCASE (e.g., MAX_RETRIES = 3)
+
+🐍 Python and FastAPI
+✅ Defining Functions with def and async def
+Use def for synchronous operations.
+Use async def for asynchronous operations.
+Return JSON or Pydantic objects for consistent API responses.
+➡️ Example:
+
+python
+Copiar
+Editar
+@app.get("/users/{user_id}")
+async def get_user(user_id: int):
+    user = await get_user_from_db(user_id)
+    return user
+✅ Data Validation with Pydantic
+Use Pydantic for input and output data validation.
+Define models based on BaseModel for automatic validation.
+➡️ Example:
+
+python
+Copiar
+Editar
+from pydantic import BaseModel
+
+class User(BaseModel):
+    name: str
+    age: int
+✅ Error Handling with HTTPException
+Use HTTPException for expected errors.
+Return HTTP responses with clear messages.
+➡️ Example:
+
+python
+Copiar
+Editar
+from fastapi import HTTPException
+
+if not user:
+    raise HTTPException(status_code=404, detail="User not found")
+🤖 Machine Learning with PyTorch and Transformers
+✅ Define Models with nn.Module
+➡️ Example:
+
+python
+Copiar
+Editar
+import torch.nn as nn
+
+class NeuralNet(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.layer = nn.Linear(10, 1)
+
+    def forward(self, x):
+        return self.layer(x)
+✅ Training with torch.cuda.amp for Mixed Precision
+➡️ Example:
+
+python
+Copiar
+Editar
+scaler = torch.cuda.amp.GradScaler()
+
+with torch.cuda.amp.autocast():
+    output = model(inputs)
+    loss = criterion(output, target)
+✅ Data Loading with DataLoader
+➡️ Example:
+
+python
+Copiar
+Editar
+from torch.utils.data import DataLoader
+
+train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+✅ Fine-Tuning with LoRA or P-tuning
+➡️ Example:
+
+python
+Copiar
+Editar
+from transformers import LoraConfig
+
+config = LoraConfig.from_pretrained("bert-base-uncased")
+🌫️ Diffusion Models with Diffusers
+✅ Using Diffusion Pipelines
+➡️ Example:
+
+python
+Copiar
+Editar
+from diffusers import StableDiffusionPipeline
+
+pipeline = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4")
+📊 Data Analysis with pandas and matplotlib
+✅ Groupby and Aggregation
+➡️ Example:
+
+python
+Copiar
+Editar
+result = df.groupby("category")["value"].mean().reset_index()
+✅ Plotting with matplotlib
+➡️ Example:
+
+python
+Copiar
+Editar
+import matplotlib.pyplot as plt
+
+plt.plot(df['x'], df['y'])
+plt.show()
+🖥️ Integration with Gradio
+✅ Interface for Inference
+➡️ Example:
+
+python
+Copiar
+Editar
+import gradio as gr
+
+interface = gr.Interface(fn=predict, inputs="text", outputs="text")
+interface.launch()
+📦 Dependencies
+✅ APIs: FastAPI, Pydantic, asyncpg, aiomysql, SQLAlchemy
+✅ Machine Learning: torch, transformers, diffusers
+✅ Data Analysis: numpy, pandas, seaborn, matplotlib
+✅ UI: Gradio
+✅ Monitoring: Tensorboard, wandb
+✅ Performance: uvicorn, Redis, cProfile
+
+🌟 Key Conventions
+✅ Start projects with a clear problem definition and data analysis.
+✅ Create modular code structures with separate files for models, data loading, and training.
+✅ Use YAML configuration files for hyperparameters and model settings.
+✅ Implement proper experiment tracking and model checkpointing.
+✅ Use version control (e.g., git) for tracking code and configuration changes.
