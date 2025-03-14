@@ -1,28 +1,71 @@
-import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { createServerClient } from '@supabase/ssr'
+import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
-  const res = NextResponse.next()
-  const supabase = createMiddlewareClient({ req: request, res })
+  let supabaseResponse = NextResponse.next({
+    request,
+  })
 
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll()
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
+          supabaseResponse = NextResponse.next({
+            request,
+          })
+          cookiesToSet.forEach(({ name, value, options }) =>
+            supabaseResponse.cookies.set(name, value, options)
+          )
+        },
+      },
+    }
+  )
+
+  // IMPORTANTE: Não execute código entre createServerClient e supabase.auth.getUser()
   const {
-    data: { session },
-  } = await supabase.auth.getSession()
+    data: { user },
+  } = await supabase.auth.getUser()
 
-  // Se não houver sessão e a rota não for pública, redireciona para o login
-  if (!session && !request.nextUrl.pathname.startsWith('/login')) {
-    return NextResponse.redirect(new URL('/login', request.url))
+  // Se não houver usuário e a rota não for pública
+  if (
+    !user &&
+    !request.nextUrl.pathname.startsWith('/login') &&
+    !request.nextUrl.pathname.startsWith('/registro') &&
+    !request.nextUrl.pathname.startsWith('/_next') &&
+    !request.nextUrl.pathname.startsWith('/favicon.ico')
+  ) {
+    const redirectUrl = new URL('/login', request.url)
+    redirectUrl.searchParams.set('redirectedFrom', request.nextUrl.pathname)
+    return NextResponse.redirect(redirectUrl)
   }
 
-  // Se houver sessão e estiver na página de login, redireciona para o dashboard
-  if (session && request.nextUrl.pathname.startsWith('/login')) {
+  // Se houver usuário e estiver tentando acessar páginas públicas
+  if (
+    user &&
+    (request.nextUrl.pathname.startsWith('/login') ||
+      request.nextUrl.pathname.startsWith('/registro'))
+  ) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
-  return res
+  return supabaseResponse
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * Feel free to modify this pattern to include more paths.
+     */
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
 } 

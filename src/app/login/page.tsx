@@ -56,7 +56,12 @@ export default function LoginPage() {
 
       // Login bem-sucedido
       toast.success("Login realizado com sucesso");
-      router.push("/dashboard");
+      
+      // Aguarda um pequeno intervalo para garantir que o toast seja exibido
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Força um hard refresh na navegação para o dashboard
+      window.location.href = "/dashboard";
     } catch (error) {
       toast.error("Ocorreu um erro inesperado. Tente novamente.");
     } finally {
